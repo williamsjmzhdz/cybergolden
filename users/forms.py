@@ -13,14 +13,14 @@ class AuthForm(AuthenticationForm):
             'placeholder': 'Nombre de usuario', 
             'name': 'username', 
             'type': 'text', 
-            'class': 'form-control'
+            'class': 'form-control form-control-user'
 	    }))
 	password = forms.CharField(max_length=25, required=True,
 		widget=forms.PasswordInput(attrs={
 		    'placeholder': 'Contraseña', 
             'name': 'password', 
             'type': 'password', 
-            'class': 'form-control'
+            'class': 'form-control form-control-user'
 	    }))
 
 	class Meta:

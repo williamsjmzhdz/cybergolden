@@ -1,0 +1,66 @@
+{% extends 'users/layout.html' %}
+
+{% load static %}
+
+{% block extend_head %}
+<title>Iniciar sesión - Cybergolden</title>
+<link rel="stylesheet" href="{% static 'users/assets/css/login-style.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="container">
+  <div class="row justify-content-center">
+      <div class="col-md-9 col-lg-12 col-xl-10">
+          <div class="card shadow-lg o-hidden border-0 my-5">
+              <div class="card-body p-0">
+                  <div class="row">
+                    {% if form %}
+                      <div class="col-lg-6 d-none d-lg-flex" style="border-right-width: 1px;border-right-style: solid;">
+                          <div class="flex-grow-1 bg-login-image" style="background-image: url(./../../static/users/assets/img/inicio-sesion-logo.png);"></div>
+                      </div>
+                      <div class="col-lg-6" style="border-right-width: 6px;border-right-style: solid;">
+                          <div class="p-5">
+                              <div class="text-center">
+                                  <h4 class="text-dark mb-4">Bienvenido</h4>
+                              </div>
+                              {% if error %}
+                              <p>{{ error }}</p>
+                              {% endif %}
+                              <form class="user" action="{% url 'users:login' %}" method="post">
+                                {% csrf_token %}  
+                                <div class="mb-3">{{ form.username }}</div>
+                                  <div class="mb-3">{{ form.password }}</div>
+                                  <div class="mb-3"></div><button class="btn btn-primary d-block btn-user w-100" type="submit">Iniciar sesión</button>
+                                  <hr>
+                              </form>
+                          </div>
+                      </div>
+                    {% endif %}
+                  </div>
+              </div>
+          </div>
+      </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block footer %}
+<footer class="bg-white sticky-footer footer">
+  <div class="container my-auto">
+    <div class="text-center my-auto copyright">
+      <span class="copyright">Copyright © Cybergolden 2023</span>
+    </div>
+  </div>
+</footer>
+</div>
+  <a class="border rounded d-inline scroll-to-top" href="#page-top">
+    <i class="fas fa-angle-up"></i>
+  </a>
+</div>
+{% endblock %}
+
+{% block scripts %}
+    <script src="{% static 'users/assets/bootstrap/js/bootstrap.min.js' %}"></script>
+    <script src="{% static 'users/assets/js/bs-init.js' %}"></script>
+    <script src="{% static 'users/assets/js/theme.js' %}"></script>
+{% endblock %}

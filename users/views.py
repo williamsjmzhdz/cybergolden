@@ -8,7 +8,6 @@ from users.forms import AuthForm
 def login_page(request):
 
     if request.user.is_authenticated:
-        pass
         return redirect('users:profile')
 
     if request.method == 'POST':
@@ -36,3 +35,8 @@ def logout_page(request):
         
 	logout(request)
 	return redirect('users:login')
+
+@login_required
+def profile(request):
+        
+    return render(request, 'users/profile.html')
