@@ -1,9 +1,154 @@
-from django.test import TestCase
+
+from django.urls import reverse
+from django.contrib.auth import authenticate, login, logout
+from django.test import TestCase, Client
 from django.contrib.auth.models import User
-from users.models import Employee, Customer
 
-# Tests for models
+from .models import Employee, Customer
+from .forms import AuthForm
+from .views import login_page, logout_page
 
-# Tests for forms
 
-# Tests for views
+
+############################################# TESTS FOR MODELS #############################################
+class EmployeeModelTest(TestCase):
+    @classmethod
+    def setUpTestData(cls):
+        # Crear un usuario para el empleado
+        testuser = User.objects.create_user(username='testuser', password='testpass')
+        testuser.save()
+        
+        # Crear un empleado para los tests
+        test_employee = Employee.objects.create(
+            user=testuser,
+            position='CEO',
+            phone_number='555-5555'
+        )
+        test_employee.save()
+        
+    def test_employee_str(self):
+        employee = Employee.objects.get(id=1)
+        expected_str = f'{employee.user.first_name} {employee.user.last_name} - {employee.position}'
+        self.assertEqual(str(employee), expected_str)
+        
+    def test_employee_user_relationship(self):
+        employee = Employee.objects.get(id=1)
+        user = User.objects.get(id=1)
+        self.assertEqual(employee.user, user)
+        
+    def test_employee_position_choices(self):
+        # Testear que las opciones para el campo "position" son correctas
+        employee = Employee.objects.get(id=1)
+        position_choices = [choice[0] for choice in employee.POSITIONS]
+        expected_choices = ['CEO', 'COO', 'SA', 'MO']
+        self.assertEqual(position_choices, expected_choices)
+        
+    def test_employee_phone_number_field(self):
+        # Testear que el campo "phone_number" admite un número telefónico válido
+        employee = Employee.objects.get(id=1)
+        phone_number = '123-4567'
+        employee.phone_number = phone_number
+        employee.save()
+        self.assertEqual(employee.phone_number, phone_number)
+
+class CustomerModelTest(TestCase):
+    @classmethod
+    def setUpTestData(cls):
+        # Create a user for the customer
+        cls.user = User.objects.create_user(
+            username='customer_test_user',
+            password='password123',
+            first_name='Jane',
+            last_name='Doe'
+        )
+        # Create a customer object
+        cls.customer = Customer.objects.create(
+            user=cls.user,
+            wholesale_gentleman_suit_price=150.00,
+            wholesale_youth_suit_price=100.00,
+            wholesale_child_suit_price=75.00
+        )
+
+    def test_customer_str_method(self):
+        self.assertEqual(str(self.customer), 'Jane Doe')
+
+    def test_customer_created_at_auto_now_add(self):
+        self.assertIsNotNone(self.customer.created_at)
+
+    def test_customer_updated_at_auto_now(self):
+        old_updated_at = self.customer.updated_at
+        self.customer.wholesale_gentleman_suit_price = 175.00
+        self.customer.save()
+        self.assertNotEqual(self.customer.updated_at, old_updated_at)
+
+
+############################################# TESTS FOR FORMS #############################################
+class AuthFormTestCase(TestCase):
+
+    def setUp(self):
+        self.user = User.objects.create_user(
+            username='testuser',
+            password='testpass'
+        )
+
+    def test_auth_form_valid(self):
+        form_data = {
+            'username': 'testuser',
+            'password': 'testpass'
+        }
+        form = AuthForm(data=form_data)
+        self.assertTrue(form.is_valid())
+
+    def test_auth_form_invalid(self):
+        form_data = {
+            'username': 'testuser',
+            'password': 'wrongpass'
+        }
+        form = AuthForm(data=form_data)
+        self.assertFalse(form.is_valid())
+
+    def test_auth_form_missing_fields(self):
+        form_data = {}
+        form = AuthForm(data=form_data)
+        self.assertFalse(form.is_valid())
+        self.assertIn('username', form.errors.keys())
+        self.assertIn('password', form.errors.keys())
+
+
+
+############################################# TESTS FOR VIEWS #############################################
+class LoginLogoutTestCase(TestCase):
+
+    def setUp(self):
+        self.client = Client()
+        self.user = User.objects.create_user(username='testuser', password='12345')
+
+    def test_login_page_view_with_get(self):
+        response = self.client.get(reverse('users:login'))
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'users/login.html')
+        self.assertTrue(isinstance(response.context['form'], AuthForm))
+
+    def test_login_page_view_with_post_and_valid_credentials(self):
+        response = self.client.post(reverse('users:login'), data={
+            'username': 'testuser',
+            'password': '12345'
+        })
+        self.assertRedirects(response, reverse('users:profile'))
+        self.assertTrue(response.wsgi_request.user.is_authenticated)
+
+    def test_login_page_view_with_post_and_invalid_credentials(self):
+        response = self.client.post(reverse('users:login'), data={
+            'username': 'testuser',
+            'password': 'wrongpassword'
+        })
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'users/login.html')
+        self.assertTrue(isinstance(response.context['form'], AuthForm))
+        self.assertContains(response, 'Las credenciales son inválidas.')
+
+    def test_logout_page_view(self):
+        self.client.login(username='testuser', password='12345')
+        response = self.client.get(reverse('users:logout'))
+        self.assertRedirects(response, reverse('users:login'))
+        self.assertFalse(response.wsgi_request.user.is_authenticated)

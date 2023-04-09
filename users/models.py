@@ -14,8 +14,9 @@ class Employee(models.Model):
         ('MO', 'Operador de maquiladora'),
     ]
 
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='employee')
     position = models.CharField(max_length=50, choices=POSITIONS, null=True, blank=True)
+    phone_number = models.CharField(max_length=20, blank=True, null=True)
 
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)

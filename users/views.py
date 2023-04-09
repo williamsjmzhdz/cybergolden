@@ -36,6 +36,7 @@ def logout_page(request):
 	logout(request)
 	return redirect('users:login')
 
+# Faltan tests
 @login_required
 def profile(request):
         

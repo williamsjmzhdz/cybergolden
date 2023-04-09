@@ -4,7 +4,7 @@
 
 {% block extend_head %}
 <title>Profile - Cybergolden</title>
-
+<link rel="stylesheet" href="{% static 'users/assets/css/profile-style.css' %}">
 {% endblock %}
 
 {% block content %} 
@@ -540,8 +540,22 @@
                     </div>
                     <div class="card-body">
                       <form>
+                        {% csrf_token %}
+                        <div id="alert-warning" class="alert alert-warning" role="alert">
+                          <!-- Code injected with JS. -->
+                        </div>
+                        <div id="alert-success" class="alert alert-success" role="alert">
+                          <!-- Code injected with JS. -->
+                        </div>
                         <div class="row">
-                          <div class="col">
+                          <div>
+                            <div class="mb-3">
+                              <label class="form-label" for="first_name"
+                                ><strong>Nombre completo</strong></label
+                              ><p>{{ user.first_name }} {{ user.last_name }}</p>
+                            </div>
+                          </div>
+                          <div>
                             <div class="mb-3">
                               <label class="form-label" for="username"
                                 ><strong>Nombre de usuario</strong></label
@@ -549,12 +563,12 @@
                                 class="form-control"
                                 type="text"
                                 id="username"
-                                placeholder="nombre.usuario"
+                                placeholder="{{ user.username }}"
                                 name="username"
                               />
                             </div>
                           </div>
-                          <div class="col">
+                          <div>
                             <div class="mb-3">
                               <label class="form-label" for="email"
                                 ><strong>Correo electrónico</strong></label
@@ -562,72 +576,32 @@
                                 class="form-control"
                                 type="email"
                                 id="email"
-                                placeholder="usuario@ejemplo.com"
+                                placeholder="{{ user.email }}"
                                 name="email"
+                              />
+                            </div>
+                          </div>
+                          <div>
+                            <div class="mb-3">
+                              <label class="form-label" for="address"
+                                ><strong>Número telefónico</strong></label
+                              ><input
+                                class="form-control"
+                                type="text"
+                                id="phone_number"
+                                placeholder="{{ user.employee.phone_number }}"
+                                name="phone_number"
                               />
                             </div>
                           </div>
                         </div>
                         <div class="row">
-                          <div class="col">
-                            <div class="mb-3">
-                              <label class="form-label" for="first_name"
-                                ><strong>Nombre(s)</strong></label
-                              ><input
-                                class="form-control"
-                                type="text"
-                                id="first_name"
-                                placeholder="Nombre(s)..."
-                                name="first_name"
-                              />
-                            </div>
-                          </div>
-                          <div class="col">
-                            <div class="mb-3">
-                              <label class="form-label" for="last_name"
-                                ><strong>Apellido(s)</strong></label
-                              ><input
-                                class="form-control"
-                                type="text"
-                                id="last_name"
-                                placeholder="Apellido(s)..."
-                                name="last_name"
-                              />
-                            </div>
-                          </div>
                         </div>
                         <div class="mb-3">
                           <button
+                            id="save-btn"
                             class="btn btn-primary btn-sm"
-                            type="submit"
-                          >
-                            Guardar
-                          </button>
-                        </div>
-                      </form>
-                    </div>
-                  </div>
-                  <div class="card shadow">
-                    <div class="card-header py-3">
-                      <p class="text-primary m-0 fw-bold">Contacto</p>
-                    </div>
-                    <div class="card-body">
-                      <form>
-                        <div class="mb-3">
-                          <label class="form-label" for="address"
-                            ><strong>Número telefónico</strong></label
-                          ><input
-                            class="form-control"
-                            type="text"
-                            id="phone_number"
-                            placeholder="+55 12345678"
-                            name="phone_number"
-                          />
-                        </div>
-                        <div class="mb-3">
-                          <button
-                            class="btn btn-primary btn-sm"
-                            type="submit"
+                            type="button"
                           >
                             Guardar
                           </button>
@@ -647,4 +621,5 @@
     <script src="{% static 'users/assets/bootstrap/js/bootstrap.min.js' %}"></script>
     <script src="{% static 'users/assets/js/bs-init.js' %}"></script>
     <script src="{% static 'users/assets/js/theme.js' %}"></script>
+    <script src="{% static 'users/assets/js/profile.js' %}"></script>
 {% endblock %}
