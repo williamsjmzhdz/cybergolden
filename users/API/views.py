@@ -14,8 +14,6 @@ def update(request):
   Update a user's information.
   """
 
-  print("Entró a update...")
-
 	# Get the user information
   data = json.loads(request.body)
   username = data['username']
@@ -71,9 +69,12 @@ def update(request):
   if update_email:
     user.email = email
         
-  if update_phone_number:
+  if update_phone_number and hasattr(user, 'employee'):
     user.employee.phone_number = phone_number
-    
+    user.employee.save()
+  elif not hasattr(user, 'employee'):
+    return JsonResponse({'status': 'error', 'message': 'El usuario no tiene un objeto Employee relacionado.'}, status=400)
+
   user.save()
 
   return JsonResponse({'status':'success','message': 'Usuario actualizado con éxito.'}, status=200)

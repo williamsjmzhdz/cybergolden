@@ -33,7 +33,6 @@ async function update() {
   try {
     const response = await fetch('/users/update/', options);
     const data = await response.json();
-    console.log(data);
 
     showAlert(data);
 

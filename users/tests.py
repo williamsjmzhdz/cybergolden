@@ -1,4 +1,5 @@
 
+import time
 from django.urls import reverse
 from django.contrib.auth import authenticate, login, logout
 from django.test import TestCase, Client
@@ -76,6 +77,7 @@ class CustomerModelTest(TestCase):
         self.assertIsNotNone(self.customer.created_at)
 
     def test_customer_updated_at_auto_now(self):
+        time.sleep(2)
         old_updated_at = self.customer.updated_at
         self.customer.wholesale_gentleman_suit_price = 175.00
         self.customer.save()
@@ -152,3 +154,92 @@ class LoginLogoutTestCase(TestCase):
         response = self.client.get(reverse('users:logout'))
         self.assertRedirects(response, reverse('users:login'))
         self.assertFalse(response.wsgi_request.user.is_authenticated)
+
+class UpdateViewTestCase(TestCase):
+    def setUp(self):
+        self.client = Client()
+        self.user = User.objects.create_user(username='testuser', email='testuser@example.com', password='testpass')
+        self.employee = Employee.objects.create(
+            user=self.user,
+            position='CEO',
+            phone_number='5555555555'
+        )
+        self.client.login(username='testuser', password='testpass')
+
+    def test_update_username(self):
+        url = reverse('users:update')
+        data = {
+            'username': 'newusername',
+            'email': '',
+            'phone_number': '',
+        }
+        response = self.client.put(url, data=data, content_type='application/json')
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.json()['status'], 'success')
+        self.assertEqual(response.json()['message'], 'Usuario actualizado con éxito.')
+        self.user.refresh_from_db()
+        self.assertEqual(self.user.username, 'newusername')
+
+    def test_update_email(self):
+        url = reverse('users:update')
+        data = {
+            'username': '',
+            'email': 'newemail@example.com',
+            'phone_number': '',
+        }
+        response = self.client.put(url, data=data, content_type='application/json')
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.json()['status'], 'success')
+        self.assertEqual(response.json()['message'], 'Usuario actualizado con éxito.')
+        self.user.refresh_from_db()
+        self.assertEqual(self.user.email, 'newemail@example.com')
+
+    def test_update_phone_number(self):
+        url = reverse('users:update')
+        data = {
+            'username': '',
+            'email': '',
+            'phone_number': '5551234567',
+        }
+        response = self.client.put(url, data=data, content_type='application/json')
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.json()['status'], 'success')
+        self.assertEqual(response.json()['message'], 'Usuario actualizado con éxito.')
+        self.user.employee.refresh_from_db()
+        self.assertEqual(self.user.employee.phone_number, '5551234567')
+
+    def test_invalid_username(self):
+        url = reverse('users:update')
+        data = {
+            'username': 'new username with spaces',
+            'email': '',
+            'phone_number': '',
+        }
+        response = self.client.put(url, data=data, content_type='application/json')
+        self.assertEqual(response.status_code, 400)
+        self.assertEqual(response.json()['status'], 'error')
+        self.assertIn('El nombre de usuario debe contener entre 1 y 150 caracteres alfanuméricos, incluyendo los símbolos @ . + -', response.json()['message'])
+
+    def test_invalid_email(self):
+        url = reverse('users:update')
+        data = {
+            'username': '',
+            'email': 'invalidemail',
+            'phone_number': '',
+        }
+        response = self.client.put(url, data=data, content_type='application/json')
+        self.assertEqual(response.status_code, 400)
+        self.assertEqual(response.json()['status'], 'error')
+        self.assertIn('El correo electrónico ingresado no es válido.', response.json()['message'])
+
+    def test_invalid_phone_number(self):
+        url = reverse('users:update')
+        data = {
+            'username': '',
+            'email': '',
+            'phone_number': '1234',
+        }
+        response = self.client.put(url, data=data, content_type='application/json')
+        self.assertEqual(response.status_code, 400)
+        self.assertEqual(response.json()['status'], 'error')
+        self.assertIn('El número telefónico debe tener 10 dígitos', response.json()['message'])
