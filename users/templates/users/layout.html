@@ -12,44 +12,29 @@
     {% endblock %}
   </head>
 
-  <body id="page-top">
+  <body id="page-top" class="sidebar-toggled">
     <div id="wrapper">
-      <nav class="navbar navbar-dark align-items-start sidebar sidebar-dark accordion bg-gradient-primary p-0">
+      <nav class="navbar navbar-dark align-items-start sidebar sidebar-dark accordion bg-gradient-primary p-0 toggled">
         <div class="container-fluid d-flex flex-column p-0">
           <a
             class="navbar-brand d-flex justify-content-center align-items-center sidebar-brand m-0"
             href="#"
           >
             <div class="sidebar-brand-icon rotate-n-15">
-              <i class="fas fa-laugh-wink"></i>
+              <i class="fas fa-cash-register"></i>
             </div>
-            <div class="sidebar-brand-text mx-3"><span>Brand</span></div>
+            <div class="sidebar-brand-text mx-3"><span>CyberGolden</span></div>
           </a>
           <hr class="sidebar-divider my-0" />
           <ul class="navbar-nav text-light" id="accordionSidebar">
             <li class="nav-item">
-              <a class="nav-link" href="index.html"
-                ><i class="fas fa-tachometer-alt"></i><span>Dashboard</span></a
-              >
-            </li>
-            <li class="nav-item">
-              <a class="nav-link active" href="{% url 'users:profile' %}"
+              <a id="nav-link-profile" class="nav-link" href="{% url 'users:profile' %}"
                 ><i class="fas fa-user"></i><span>Perfíl</span></a
               >
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="{% url 'products:inventory' %}"
-                ><i class="fas fa-table"></i><span>Inventario</span></a
-              >
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="{% url 'users:login' %}"
-                ><i class="far fa-user-circle"></i><span>Login</span></a
-              >
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="register.html"
-                ><i class="fas fa-user-circle"></i><span>Register</span></a
+              <a id="nav-link-categories" class="nav-link" href="{% url 'products:categories' %}"
+                ><i class="fas fa-table"></i><span>Categorías</span></a
               >
             </li>
           </ul>
@@ -355,7 +340,8 @@
     {% block footer %}
 
     {% endblock %}
-    
+
+    <script src="{% static 'general/js/side-navbar.js' %}"></script>
     {% block scripts %}
 
     {% endblock %}

@@ -3,6 +3,6 @@ from django.contrib.auth.decorators import login_required
 
 
 @login_required
-def inventory(request):
+def categories(request):
 
-    return render(request, 'products/inventory.html')
+    return render(request, 'products/categories.html')
