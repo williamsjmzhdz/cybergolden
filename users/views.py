@@ -3,6 +3,7 @@ from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.decorators import login_required
 
 from users.forms import AuthForm
+from users.models import Employee
 
 
 def login_page(request):
@@ -39,5 +40,14 @@ def logout_page(request):
 # Faltan tests
 @login_required
 def profile(request):
-        
-    return render(request, 'users/profile.html')
+    try:
+        employee = request.user.employee
+        see_sales = employee.position in ['SA', 'CEO', 'COO']
+    except Employee.DoesNotExist:
+        employee = None
+        see_sales = False
+
+    print(employee, see_sales)
+    context = {'employee': employee, 'see_sales': see_sales}
+    
+    return render(request, 'users/profile.html', context)
