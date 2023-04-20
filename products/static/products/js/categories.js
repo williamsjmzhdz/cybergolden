@@ -1,21 +1,33 @@
-// Espera a que el DOM se cargue antes de ejecutar el código
 document.addEventListener('DOMContentLoaded', () => {
-  markLink();
-});
+  const $navLinks = document.querySelectorAll('.nav-link');
 
-// Esta función marca el enlace de navegación activo
-function markLink() {
+  const $showCategoriesContainer = document.getElementById('show-categories-container');
+  const $createCategoryContainer = document.getElementById('create-category-container');
 
-  // Obtiene todos los enlaces de navegación
-  const navLinks = document.querySelectorAll('.nav-link');
-
-  // Para cada enlace, agrega un evento de clic que elimina la clase 'active'
-  navLinks.forEach(navLink => {
-    navLink.addEventListener('click', () => {
-      navLink.classList.remove('active');
-    });
+  const $createCategoryBtn = document.getElementById('create-category-btn');
+  $createCategoryBtn.addEventListener('click', () => {
+    showAndHideContainers($createCategoryContainer, $showCategoriesContainer);
   });
 
-  // Agrega la clase 'active' al enlace de categorías
-  document.getElementById('nav-link-categories').classList.add('active');
+  const $cancelCreateCategoryBtn = document.getElementById('cancel-create-category-btn');
+  $cancelCreateCategoryBtn.addEventListener('click', () => {
+    showAndHideContainers($showCategoriesContainer, $createCategoryContainer);
+  });
+
+  markActiveNavigationLink($navLinks, 'nav-link-categories');
+});
+
+function markActiveNavigationLink($navLinks, activeLink) {
+  $navLinks.forEach($navLink => {
+    if ($navLink.id === activeLink) {
+      $navLink.classList.add('active');
+    } else {
+      $navLink.classList.remove('active');
+    }
+  });
+}
+
+function showAndHideContainers($showContainer, $hideContainer) {
+  $showContainer.style.display = 'block';
+  $hideContainer.style.display = 'none';
 }
