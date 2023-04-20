@@ -19,6 +19,26 @@ document.addEventListener('DOMContentLoaded', () => {
     createCategory();
   });
 
+  const $deleteCategoryBtns = document.querySelectorAll('.delete-category-btn');
+  $deleteCategoryBtns.forEach(($deleteCategoryBtn) => {
+    $deleteCategoryBtn.addEventListener('click', (e) => {
+      swal.fire({
+        title: '¿Estás seguro?',
+        text: 'No podrás revertir esto',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Sí, eliminarlo'
+      }).then((result) => {
+        if (result.isConfirmed) {
+          console.log(e.target);
+          deleteCategory(e.target.dataset.id);
+        }
+      });
+    });
+  });
+  
   const $navLinks = document.querySelectorAll('.nav-link');
   markActiveNavigationLink($navLinks, 'nav-link-categories');
 });
@@ -36,9 +56,11 @@ function markActiveNavigationLink($navLinks, activeLink) {
   });
 }
 
-function showAndHideContainers($showContainer, $hideContainer) {
+function showAndHideContainers($showContainer, ...$hideContainers) {
   $showContainer.style.display = 'block';
-  $hideContainer.style.display = 'none';
+  $hideContainers.forEach($hideContainer => {
+    $hideContainer.style.display = 'none';
+  });
 }
 
 
@@ -49,7 +71,6 @@ function showAndHideContainers($showContainer, $hideContainer) {
 async function createCategory() {
 
   const name = document.getElementById('name').value;
-  console.log(name);
 
   const data = {
     name: name,
@@ -77,6 +98,44 @@ async function createCategory() {
       window.location.reload();
     } else {
       document.getElementById('repeated-name-alert').innerText = `${data.message} El nombre de la categoría debe ser único.`;
+    }
+
+  } catch (error) {
+
+    alert(error);
+
+  }
+
+}
+
+// Esta función se encarga de eliminar una categoría haciendo una llamada a una API 
+async function deleteCategory(id) {
+
+  console.log('deleting category with id ' + id);
+
+  const data = {
+    id: id,
+  };
+
+  // Get the CSRF token
+  const csrfToken = document.getElementsByName('csrfmiddlewaretoken')[0].value;
+
+  const options = {
+    method: 'DELETE',
+    body: JSON.stringify(data),
+    headers: {
+      'Content-Type': 'application/json',
+      'X-CSRFToken': csrfToken
+    }
+  };
+  
+  try {
+    
+    const response = await fetch('/products/delete/category', options);
+    const data = await response.json();
+
+    if (data.success) {
+      window.location.reload();
     }
 
   } catch (error) {

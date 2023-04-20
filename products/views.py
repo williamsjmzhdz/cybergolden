@@ -1,3 +1,4 @@
+from django.http import HttpResponse
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 
@@ -21,6 +22,18 @@ def categories(request):
         return render(request, 'products/categories.html', {
             'categories': categories,
             'form': form
+        })  
+
+@login_required
+def edit_category(request, id):
+    try:
+        category = Category.objects.get(id=id)
+    except Category.DoesNotExist:
+        return HttpResponse(status=404)
+        
+    if request.method == 'GET':
+        form = CategoryForm(instance=category)
+        return render(request, 'products/edit-category.html', {
+            'form': form,
+            'category_id': id,
         })
-
-

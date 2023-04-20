@@ -38,18 +38,18 @@
                       <tr class="hoverable-row  last-row">
                         <td class="category-name">{{ category.name }}</td>
                         <td class="text-end">
-                          <button class="btn btn-danger btn-sm delete-category-btn" data-id="{{ category.id }}" data-name="{{ category.name }}" type="button"><i class="far fa-trash-alt"></i></button>
-                          <button class="btn btn-primary btn-sm edit-category-btn" data-id="{{ category.id }}" data-name="{{ category.name }}" type="button"><i class="far fa-edit"></i></button>
-                          <button class="btn btn-success btn-sm view-category-btn" data-id="{{ category.id }}" data-name="{{ category.name }}" type="button"><i class="far fa-eye"></i></button>
+                          <button class="btn btn-danger btn-sm delete-category-btn" data-id="{{ category.id }}" data-name="{{ category.name }}" type="button"><i class="far fa-trash-alt" data-id="{{ category.id }}" data-name="{{ category.name }}"></i></button>
+                          <button class="btn btn-primary btn-sm edit-category-btn" data-id="{{ category.id }}" data-name="{{ category.name }}" type="button"><i class="far fa-edit" data-id="{{ category.id }}" data-name="{{ category.name }}"></i></button>
+                          <button class="btn btn-success btn-sm view-category-btn" data-id="{{ category.id }}" data-name="{{ category.name }}" type="button"><i class="far fa-eye" data-name="{{ category.name }}"></i></button>
                         </td>
                       </tr>
                       {% else %}
                       <tr class="hoverable-row">
                         <td class="category-name">{{ category.name }}</td>
                         <td class="text-end">
-                          <button class="btn btn-danger btn-sm delete-category-btn" data-id="{{ category.id }}" data-name="{{ category.name }}" type="button"><i class="far fa-trash-alt"></i></button>
-                          <button class="btn btn-primary btn-sm edit-category-btn" data-id="{{ category.id }}" data-name="{{ category.name }}" type="button"><i class="far fa-edit"></i></button>
-                          <button class="btn btn-success btn-sm view-category-btn" data-id="{{ category.id }}" data-name="{{ category.name }}" type="button"><i class="far fa-eye"></i></button>
+                          <button class="btn btn-danger btn-sm delete-category-btn" data-id="{{ category.id }}" data-name="{{ category.name }}" type="button"><i class="far fa-trash-alt" data-id="{{ category.id }}" data-name="{{ category.name }}"></i></button>
+                          <a href="{% url 'products:edit_category' category.id %}" class="btn btn-primary btn-sm edit-category-btn" data-id="{{ category.id }}" data-name="{{ category.name }}" type="button"><i class="far fa-edit" data-id="{{ category.id }}" data-name="{{ category.name }}"></i></a>
+                          <button class="btn btn-success btn-sm view-category-btn" data-id="{{ category.id }}" data-name="{{ category.name }}" type="button"><i class="far fa-eye" data-id="{{ category.id }}" data-name="{{ category.name }}"></i></button>
                         </td>
                       </tr>
                       {% endif %}
@@ -82,7 +82,7 @@
               {% csrf_token %}
               <div class="mb-3">
                 <label class="form-label" for="category-name">Nombre de la categoría</label>
-                {{ form.name }}
+                {{ form }}
                 <small class="form-text text-muted" style="color: tomato !important;" id="repeated-name-alert"></small>
               </div>
               <div class="mb-3">
