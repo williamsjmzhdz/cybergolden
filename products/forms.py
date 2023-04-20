@@ -13,6 +13,7 @@ class CategoryForm(forms.ModelForm):
       'name': 'name', 
       'type': 'text', 
       'class': 'form-control',
+      'id': 'name',
       'style': 'margin: 5px; width: 100%;',
     }),
     error_messages={

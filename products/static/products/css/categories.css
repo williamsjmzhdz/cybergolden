@@ -40,3 +40,7 @@
   background-color: green;
   color: white;
 }
+
+.categories-table:last-child td {
+  border-bottom: none !important;
+}

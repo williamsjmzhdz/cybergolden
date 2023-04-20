@@ -9,4 +9,5 @@ urlpatterns = [
     path('categories/', views.categories, name='categories'),
 
     # API routes
+    path('create/category', api_views.create_category, name='create_category'),
 ]
