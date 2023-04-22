@@ -33,8 +33,95 @@
       </div>
     </div>
 
-  </div>
+
+    <div id="products-container">
+      <div class="card shadow">
+        <div class="card-header d-flex justify-content-between align-items-center flex-wrap py-3">
+          <p class="text-primary flex-grow-0 flex-shrink-1 m-0 fw-bold">Productos</p>
+          <div class="d-flex">
+            <button class="btn btn-danger btn-sm btn-icon delete-row-btn me-3" type="button">
+              <i class="far fa-trash-alt"></i>
+            </button>
+            <a href="{% url 'products:create_category' %}" id="create-category-btn" class="btn btn-primary" type="button">
+              <i class="fas fa-plus"></i>&nbsp;Crear producto
+            </a>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="row mb-3">
+            <div class="col-md-8">
+              <div class="input-group">
+                <input id="searchInput" type="text" class="form-control" placeholder="Buscar...">
+              </div>
+            </div>
+          </div>
+          <div class="table-responsive">
+            <table class="table table-striped">
+              <thead>
+                <tr>
+                  <th></th>
+                  <th>ID</th>
+                  <th>Nombre</th>
+                  <th>Email</th>
+                  <th class="text-end" scope="col">Acciones</th>
+                </tr>
+              </thead>
+              <tbody id="tableBody">
+                <tr>
+                  <td><input class="form-check-input select-row" type="checkbox"></td>
+                  <td>1</td>
+                  <td>Juan</td>
+                  <td>juan@gmail.com</td>
+                  <td class="text-end">
+                    <button class="btn btn-danger btn-sm delete-category-btn" type="button">
+                      <i class="far fa-trash-alt"></i>
+                    </button>
+                    <button class="btn btn-primary btn-sm update-category-btn" type="button">
+                      <i class="far fa-edit"></i>
+                    </button>
+                  </td>
+                </tr>
+                <tr>
+                  <td><input class="form-check-input select-row" type="checkbox"></td>
+                  <td>2</td>
+                  <td>Maria</td>
+                  <td>maria@gmail.com</td>
+                  <td class="text-end">
+                    <button class="btn btn-danger btn-sm delete-category-btn" type="button">
+                      <i class="far fa-trash-alt"></i>
+                    </button>
+                    <button class="btn btn-primary btn-sm update-category-btn" type="button">
+                      <i class="far fa-edit"></i>
+                    </button>
+                  </td>
+                </tr>
+                <tr>
+                  <td><input class="form-check-input select-row" type="checkbox"></td>
+                  <td>3</td>
+                  <td>Pedro</td>
+                  <td>pedro@gmail.com</td>
+                  <td class="text-end">
+                    <button class="btn btn-danger btn-sm delete-category-btn" type="button">
+                      <i class="far fa-trash-alt"></i>
+                    </button>    
+                    <button class="btn btn-primary btn-sm update-category-btn" type="button">
+                      <i class="far fa-edit"></i>
+                    </button>
+                  </td>  
+              </tr>
+            </tbody>
+          </table>
+          
+        </div>
+      </div>
+    </div>
+    
+    
+
 </div>
+
+
+
 {% endblock %}
 
 {% block scripts %}
@@ -42,4 +129,32 @@
     <script src="{% static 'users/assets/js/bs-init.js' %}"></script>
     <script src="{% static 'users/assets/js/theme.js' %}"></script>
     <script src="{% static 'products/js/create-category.js' %}"></script>
+
+        <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"
+            integrity="sha384-4Jn4o4MLRwE6Qn8Vfny5WRMwd7Sv29ZpImW8Vp6FggD0KmNF24v0JgOzBfU+7KU2"
+            crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    
+    <script>
+      $(document).ready(function(){
+        $("#searchInput").on("keyup", function() {
+          var value = $(this).val().toLowerCase();
+          $("#tableBody tr").filter(function() {
+            $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+          });
+        });
+      });
+    </script>
+
+    <script>
+      const selectAllCheckbox = document.getElementById('select-all');
+      const selectRowCheckboxes = document.querySelectorAll('.select-row');
+
+      selectAllCheckbox.addEventListener('click', function() {
+        selectRowCheckboxes.forEach(function(checkbox) {
+          checkbox.checked = selectAllCheckbox.checked;
+        });
+      });
+    </script>
 {% endblock %}
