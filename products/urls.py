@@ -10,6 +10,8 @@ urlpatterns = [
     path('categories/update/category/<int:id>/', views.update_category, name='update_category'),
     path('categories/create/category/', views.create_category, name='create_category'),
 
+    path('products/', views.products, name='products'),
+
     # API routes
     path('create/category', api_views.create_category),
     path('delete/category', api_views.delete_category),

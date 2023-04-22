@@ -3,7 +3,7 @@ from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 
 from products.forms import CategoryForm
-from products.models import Category
+from products.models import Category, Product
 
 
 @login_required
@@ -17,11 +17,8 @@ def categories(request):
         for category in categories:
             category.name = category.name.capitalize()
 
-        form = CategoryForm()
-
         return render(request, 'products/categories.html', {
             'categories': categories,
-            'form': form
         })  
 
 @login_required
@@ -46,3 +43,14 @@ def create_category(request):
         return render(request, 'products/create-category.html', {
             'form': form,
         })
+
+
+@login_required
+def products(request):
+
+    if request.method == 'GET':
+        products = Product.objects.all()
+
+        return render(request, 'products/products.html', {
+            'products': products,
+        })  
