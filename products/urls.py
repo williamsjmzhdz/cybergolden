@@ -7,7 +7,8 @@ app_name='products'
 
 urlpatterns = [
     path('categories/', views.categories, name='categories'),
-    path('categories/edit/category/<int:id>', views.edit_category, name='edit_category'),
+    path('categories/update/category/<int:id>/', views.update_category, name='update_category'),
+    path('categories/create/category/', views.create_category, name='create_category'),
 
     # API routes
     path('create/category', api_views.create_category),

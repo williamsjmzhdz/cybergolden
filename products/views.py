@@ -25,7 +25,7 @@ def categories(request):
         })  
 
 @login_required
-def edit_category(request, id):
+def update_category(request, id):
     try:
         category = Category.objects.get(id=id)
     except Category.DoesNotExist:
@@ -33,7 +33,16 @@ def edit_category(request, id):
         
     if request.method == 'GET':
         form = CategoryForm(instance=category)
-        return render(request, 'products/edit-category.html', {
+        return render(request, 'products/update-category.html', {
             'form': form,
             'category_id': id,
+        })
+    
+@login_required
+def create_category(request):
+        
+    if request.method == 'GET':
+        form = CategoryForm()
+        return render(request, 'products/create-category.html', {
+            'form': form,
         })

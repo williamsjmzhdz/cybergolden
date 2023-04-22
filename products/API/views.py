@@ -16,6 +16,10 @@ def create_category(request):
     data = json.loads(request.body)
     name = data['name'].lower()
 
+    # Revisa si recibió una cadena vacía
+    if not name or len(name.strip()) == 0:
+        return JsonResponse({'success': False, 'message': 'El nombre de la categoría no puede estar vacío.'}, status=400)
+
     # Revisa si la categoría ya existe
     if Category.objects.filter(name=name).exists():
         response_data = {'success': False, 'message': 'Ya existe una categoría con este nombre.'}
@@ -54,6 +58,7 @@ def update_category(request):
     category_id = data.get('id', None)
     new_name = data.get('name', None)
 
+    # Revisa si recibió una cadena vacía
     if not new_name or len(new_name.strip()) == 0:
         return JsonResponse({'success': False, 'message': 'El nombre de la categoría no puede estar vacío.'}, status=400)
 
@@ -78,4 +83,3 @@ def update_category(request):
     category.save()
 
     return JsonResponse({'success': True, 'message': 'La categoría se actualizó correctamente.'}, status=200)
-
