@@ -1,66 +1,83 @@
-{% extends 'users/layout.html' %}
-
 {% load static %}
 
-{% block extend_head %}
-<title>Iniciar sesión - Cybergolden</title>
-<link rel="stylesheet" href="{% static 'users/assets/css/login.css' %}">
-{% endblock %}
-
-{% block content %}
-<div class="container">
-  <div class="row justify-content-center">
-      <div class="col-md-9 col-lg-12 col-xl-10">
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, shrink-to-fit=no"
+    />
+    <title>Iniciar Sesión - CyberGolden</title>
+    <link
+      rel="stylesheet"
+      href="{% static 'users/assets/bootstrap/css/bootstrap.min.css' %}"
+    />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i&amp;display=swap"
+    />
+  </head>
+  <body
+    class="d-flex d-sm-flex d-md-flex d-lg-flex d-xl-flex justify-content-center align-items-center justify-content-sm-center align-items-sm-center justify-content-md-center align-items-md-center justify-content-lg-center align-items-lg-center justify-content-xl-center align-items-xl-center bg-gradient-primary"
+  >
+    <div class="container">
+      <div class="row justify-content-center">
+        <div class="col-md-9 col-lg-12 col-xl-10">
           <div class="card shadow-lg o-hidden border-0 my-5">
-              <div class="card-body p-0">
-                  <div class="row">
-                    {% if form %}
-                      <div class="col-lg-6 d-none d-lg-flex" style="border-right-width: 1px;border-right-style: solid;">
-                          <div class="flex-grow-1 bg-login-image" style="background-image: url(./../../static/users/assets/img/inicio-sesion-logo.png);"></div>
-                      </div>
-                      <div class="col-lg-6" style="border-right-width: 6px;border-right-style: solid;">
-                          <div class="p-5">
-                              <div class="text-center">
-                                  <h4 class="text-dark mb-4">Bienvenido</h4>
-                              </div>
-                              {% if error %}
-                              <p>{{ error }}</p>
-                              {% endif %}
-                              <form class="user" action="{% url 'users:login' %}" method="post">
-                                {% csrf_token %}  
-                                <div class="mb-3">{{ form.username }}</div>
-                                  <div class="mb-3">{{ form.password }}</div>
-                                  <div class="mb-3"></div><button class="btn btn-primary d-block btn-user w-100" type="submit">Iniciar sesión</button>
-                                  <hr>
-                              </form>
-                          </div>
-                      </div>
+            <div class="card-body p-0">
+              <div class="row">
+                {% if form %}
+                <div
+                  class="col-lg-6 d-none d-lg-flex"
+                  style="border-right-width: 1px; border-right-style: solid"
+                >
+                  <div
+                    class="flex-grow-1 bg-login-image"
+                    style="
+                      background-image: url(./../../static/users/assets/img/inicio-sesion-logo.png);
+                    "
+                  ></div>
+                </div>
+                <div
+                  class="col-lg-6"
+                  style="border-right-width: 6px; border-right-style: solid"
+                >
+                  <div class="p-5">
+                    <div class="text-center">
+                      <h4 class="text-dark mb-4">Bienvenido</h4>
+                    </div>
+                    {% if error %}
+                    <p>{{ error }}</p>
                     {% endif %}
+                    <form
+                      class="user"
+                      action="{% url 'users:login' %}"
+                      method="post"
+                    >
+                      {% csrf_token %}
+                      <div class="mb-3">{{ form.username }}</div>
+                      <div class="mb-3">{{ form.password }}</div>
+                      <div class="mb-3"></div>
+                      <button
+                        class="btn btn-primary d-block btn-user w-100"
+                        type="submit"
+                      >
+                        Iniciar sesión
+                      </button>
+                      <hr />
+                    </form>
                   </div>
+                </div>
+                {% endif %}
               </div>
+            </div>
           </div>
+        </div>
       </div>
-  </div>
-</div>
-{% endblock %}
-
-{% block footer %}
-<footer class="bg-white sticky-footer footer">
-  <div class="container my-auto">
-    <div class="text-center my-auto copyright">
-      <span class="copyright">Copyright © Cybergolden 2023</span>
     </div>
-  </div>
-</footer>
-</div>
-  <a class="border rounded d-inline scroll-to-top" href="#page-top">
-    <i class="fas fa-angle-up"></i>
-  </a>
-</div>
-{% endblock %}
-
-{% block scripts %}
     <script src="{% static 'users/assets/bootstrap/js/bootstrap.min.js' %}"></script>
     <script src="{% static 'users/assets/js/bs-init.js' %}"></script>
     <script src="{% static 'users/assets/js/theme.js' %}"></script>
-{% endblock %}
+  </body>
+</html>
