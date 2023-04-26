@@ -19,7 +19,7 @@
           <form id="create-category-form">
             {% csrf_token %}
             <div class="mb-3">
-              <label class="form-label" for="category-name">Nombre de la categoría</label>
+              <label class="form-label" for="name">Nombre de la categoría</label>
               {{ form }}
               <small class="form-text text-muted" style="color: tomato !important;" id="repeated-name-alert"></small>
             </div>

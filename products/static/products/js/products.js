@@ -31,12 +31,14 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
   
+  // Marcar el enlace Products como activo
   const $navLinks = document.querySelectorAll('.nav-link');
   markActiveNavigationLink($navLinks, 'nav-link-products');
 
 });
 
 function markActiveNavigationLink($navLinks, activeLink) {
+  console.log('entro');
   $navLinks.forEach($navLink => {
     if ($navLink.id === activeLink) {
       $navLink.classList.add('active');

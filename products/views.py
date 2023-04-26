@@ -1,11 +1,14 @@
 from django.http import HttpResponse
-from django.shortcuts import render
+from django.shortcuts import redirect, render
 from django.contrib.auth.decorators import login_required
 
-from products.forms import CategoryForm
+from products.forms import CategoryForm, ProductForm
 from products.models import Category, Product
 
 
+STAFF = ['CEO', 'COO']
+
+# Plantillas de categorías
 @login_required
 def categories(request):
 
@@ -19,21 +22,8 @@ def categories(request):
 
         return render(request, 'products/categories.html', {
             'categories': categories,
+            'is_staff': request.user.employee.position in STAFF,
         })  
-
-@login_required
-def update_category(request, id):
-    try:
-        category = Category.objects.get(id=id)
-    except Category.DoesNotExist:
-        return HttpResponse(status=404)
-        
-    if request.method == 'GET':
-        form = CategoryForm(instance=category)
-        return render(request, 'products/update-category.html', {
-            'form': form,
-            'category_id': id,
-        })
     
 @login_required
 def create_category(request):
@@ -44,7 +34,29 @@ def create_category(request):
             'form': form,
         })
 
+@login_required
+def update_category(request, id):
 
+    if request.user.employee.position in STAFF:
+
+        try:
+            category = Category.objects.get(id=id)
+        except Category.DoesNotExist:
+            return HttpResponse(status=404)
+            
+        if request.method == 'GET':
+            form = CategoryForm(instance=category)
+            return render(request, 'products/update-category.html', {
+                'form': form,
+                'category_id': id,
+            })
+    
+    else:
+
+        return redirect('products:categories')
+
+
+# Plantillas de productos
 @login_required
 def products(request):
 
@@ -53,4 +65,13 @@ def products(request):
 
         return render(request, 'products/products.html', {
             'products': products,
-        })  
+        })
+    
+@login_required
+def create_product(request):
+        
+    if request.method == 'GET':
+        form = ProductForm()
+        return render(request, 'products/create-product.html', {
+            'form': form,
+        })
