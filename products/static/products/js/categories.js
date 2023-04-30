@@ -53,7 +53,7 @@ async function deleteCategory(id) {
   
   try {
     
-    const response = await fetch('/products/delete/category', options);
+    const response = await fetch('/products/api/delete/category', options);
     const data = await response.json();
 
     if (data.success) {

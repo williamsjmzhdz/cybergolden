@@ -16,7 +16,7 @@
           <p class="text-primary flex-grow-0 flex-shrink-1 m-0 fw-bold">Crear producto</p>
         </div>
         <div class="card-body">
-          <form id="create-category-form">
+          <form id="create-category-form" action="{% url 'products:create_product' %}" method="POST">
             {% csrf_token %}
             <div class="mb-3">
 
@@ -30,10 +30,7 @@
               {{ form.production_cost }}
 
               <label class="form-label" for="logistic-cost" style="margin-top: 10px;">Costo de logística</label>
-              {{ form.logistic_cost }}
-
-              <label class="form-label" for="photo" style="margin-top: 10px;">Foto del producto</label>
-              {{ form.photo }}
+              {{ form.logistics_cost }}
 
               <label class="form-label" for="minimum-stock" style="margin-top: 10px;">Stock mínimo</label>
               {{ form.minimum_stock }}
@@ -41,10 +38,14 @@
               <label class="form-label" for="size" style="margin-top: 10px;">Talla</label>
               {{ form.size }}
               
-              <small class="form-text text-muted" style="color: tomato !important;" id="repeated-name-alert"></small>
+              {% if message %}
+                <small class="form-text text-muted" style="color: tomato !important;" id="repeated-name-alert">
+                  {{ message }}
+                </small>
+              {% endif %}
             </div>
             <div class="mb-3">
-              <button class="btn btn-primary" type="button" id="submit-create-product-btn">Crear producto</button>
+              <button class="btn btn-primary" type="submit" id="submit-create-product-btn">Crear producto</button>
               <button class="btn btn-secondary" type="button" id="cancel-create-product-btn">Cancelar</button>
             </div>
           </form>

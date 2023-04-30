@@ -1,13 +1,8 @@
 document.addEventListener("DOMContentLoaded", () => {
 
-  const $submitCreateCategoryBtn = document.getElementById('submit-create-product-btn');
-  $submitCreateCategoryBtn.addEventListener("click", () => {
-    createProduct();
-  });
-
   const $cancelCreateCategoryBtn = document.getElementById('cancel-create-product-btn');
   $cancelCreateCategoryBtn.addEventListener('click', () => {
-    window.location.href = "/products/products/";
+    window.location.href = "/products/";
   });
 
   const $navLinks = document.querySelectorAll('.nav-link');
@@ -25,12 +20,5 @@ function markActiveNavigationLink($navLinks, activeLink) {
       $navLink.classList.remove('active');
     }
   });
-
-}
-
-
-async function createProduct() {
-
-  console.log('hola mundo');
 
 }

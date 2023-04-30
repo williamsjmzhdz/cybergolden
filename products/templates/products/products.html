@@ -47,6 +47,7 @@
                   <th class="text-center"><input type="checkbox"></th>
                   <th class="text-center">Nombre</th>
                   <th class="text-center">Categoría</th>
+                  <th class="text-center">Talla</th>
                   <th class="text-center">Costo producción/compra</th>
                   <th class="text-center">Costo logística</th>
                   <th class="text-center">Costo total</th>
@@ -55,74 +56,48 @@
                 </tr>
               </thead>
               <tbody>
-                <tr>
-                  <th class="text-center"><input type="checkbox"></th>
-                  <td class="text-center"><img class="rounded-circle me-2" width="30" height="30" src="assets/img/avatars/avatar1.jpeg">Traje negro cab</td>
-                  <td class="text-center">Trajes</td>
-                  <td class="text-center">$450</td>
-                  <td class="text-center">$200</td>
-                  <td class="text-center">$650</td>
-                  <td class="text-center">30.76%</td>   
-                  <td class="text-center">
-                    <button class="btn btn-primary btn-sm" type="button">
-                      <i class="far fa-edit"></i>
-                    </button>
-                    <button class="btn btn-danger btn-sm" type="button">
-                      <i class="far fa-trash-alt"></i>
-                    </button>
-                  </td>
-                </tr>
-                <tr>
-                  <th class="text-center"><input type="checkbox"></th>
-                  <td class="text-center"><img class="rounded-circle me-2" width="30" height="30" src="assets/img/avatars/avatar1.jpeg">Traje negro cab</td>
-                  <td class="text-center">Trajes</td>
-                  <td class="text-center">$450</td>
-                  <td class="text-center">$200</td>
-                  <td class="text-center">$650</td>
-                  <td class="text-center">30.76%</td>   
-                  <td class="text-center">
-                    <button class="btn btn-primary btn-sm" type="button">
-                      <i class="far fa-edit"></i>
-                    </button>
-                    <button class="btn btn-danger btn-sm" type="button">
-                      <i class="far fa-trash-alt"></i>
-                    </button>
-                  </td>
-                </tr>
-                <tr>
-                  <th class="text-center"><input type="checkbox"></th>
-                  <td class="text-center"><img class="rounded-circle me-2" width="30" height="30" src="assets/img/avatars/avatar1.jpeg">Traje negro cab</td>
-                  <td class="text-center">Trajes</td>
-                  <td class="text-center">$450</td>
-                  <td class="text-center">$200</td>
-                  <td class="text-center">$650</td>
-                  <td class="text-center">30.76%</td>   
-                  <td class="text-center">
-                    <button class="btn btn-primary btn-sm" type="button">
-                      <i class="far fa-edit"></i>
-                    </button>
-                    <button class="btn btn-danger btn-sm" type="button">
-                      <i class="far fa-trash-alt"></i>
-                    </button>
-                  </td>
-                </tr>
-                <tr>
-                  <th class="text-center"><input type="checkbox"></th>
-                  <td class="text-center"><img class="rounded-circle me-2" width="30" height="30" src="assets/img/avatars/avatar1.jpeg">Camisa azul cab</td>
-                  <td class="text-center">Camisas</td>
-                  <td class="text-center">$100</td>
-                  <td class="text-center">$50</td>
-                  <td class="text-center">$150</td>
-                  <td class="text-center">33.33%</td>   
-                  <td class="text-center">
-                    <button class="btn btn-primary btn-sm" type="button">
-                      <i class="far fa-edit"></i>
-                    </button>
-                    <button class="btn btn-danger btn-sm" type="button">
-                      <i class="far fa-trash-alt"></i>
-                    </button>
-                  </td>
-                </tr>
+                {% if products %}
+
+                  {% for product in products %}
+
+                  <tr>
+                    <th class="text-center"><input type="checkbox"></th>
+                    <td class="text-center">{{ product.name }}</td>
+                    <td class="text-center">{{ product.category }}</td>
+                    <td class="text-center">{{ product.size }}</td>
+                    <td class="text-center">${{ product.production_cost }}</td>
+                    <td class="text-center">${{ product.logistics_cost }}</td>
+
+                    {% with total_cost=product.production_cost|add:product.logistics_cost %}
+                      <td class="text-center">${{ total_cost|floatformat:"2" }}</td>
+                    {% endwith %}
+                    
+
+                    {% with total_cost=product.production_cost|add:product.logistics_cost %}
+                      <td class="text-center logistics_cost_percentage" data-logistics-cost="{{ product.logistics_cost }}" data-total-cost="{{ total_cost }}">
+                       <!-- Porcentaje insertado con JS --> 
+                      </td>
+                    {% endwith %}
+
+
+                    <td class="text-center">
+                      <button class="btn btn-primary btn-sm" type="button">
+                        <i class="far fa-edit"></i>
+                      </button>
+                      <button class="btn btn-danger btn-sm" type="button">
+                        <i class="far fa-trash-alt"></i>
+                      </button>
+                    </td>
+                  </tr>
+                  
+
+                  {% endfor %}
+
+                {% else %}
+
+                    <p>No hay productos para mostrar.</p>
+
+                {% endif %}
               </tbody>
 
             </table>

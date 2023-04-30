@@ -32,7 +32,7 @@ class ProductForm(forms.ModelForm):
 
     class Meta:
         model = Product
-        fields = ['name', 'category', 'production_cost', 'logistics_cost', 'photo', 'minimum_stock', 'size']
+        fields = ['name', 'category', 'production_cost', 'logistics_cost', 'minimum_stock', 'size']
 
     name = forms.CharField(label='', max_length=100, required=True, 
       widget=forms.TextInput(attrs={
@@ -77,7 +77,7 @@ class ProductForm(forms.ModelForm):
         ),
     )
 
-    logistic_cost = forms.DecimalField(
+    logistics_cost = forms.DecimalField(
         label='',
         max_digits=10,
         decimal_places=2,
@@ -94,23 +94,14 @@ class ProductForm(forms.ModelForm):
         ),
     )
 
-    photo = forms.ImageField(
-        label='Foto del producto',
-        required=True,
-        widget=forms.ClearableFileInput(
-            attrs={
-                'class': 'form-control',
-                'name': 'photo',
-                'id': 'photo',
-            },
-        ),
-    )
+
 
     minimum_stock = forms.IntegerField(
         label='', 
         required=True,
         widget=forms.NumberInput(
             attrs={
+                'placeholder': 'Ingrese el mínimo de stock para enviar una alerta...',
                 'class': 'form-control',
                 'name': 'minimum-stock',
                 'id': 'minimum-stock',

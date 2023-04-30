@@ -13,12 +13,14 @@ urlpatterns = [
     path('categories/update/category/<int:id>/', views.update_category, name='update_category'),
 
     # Plantillas de productos
-    path('products/', views.products, name='products'),
-    path('categories/create/product/', views.create_product, name='create_product'),
+    path('', views.products, name='products'),
+    path('create/product/', views.create_product, name='create_product'),
 
     # Rutas API para categorías
-    path('create/category', api_views.create_category),
-    path('delete/category', api_views.delete_category),
-    path('update/category', api_views.update_category),
+    path('api/create/category', api_views.create_category),
+    path('api/delete/category', api_views.delete_category),
+    path('api/update/category', api_views.update_category),
+
+    # Rutas API para productos
 
 ]

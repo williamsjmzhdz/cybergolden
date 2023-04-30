@@ -52,10 +52,9 @@ class Product(models.Model):
     #available = models.BooleanField(default=True) <-- Va en la tabla ProductInventory
     production_cost = models.DecimalField(max_digits=10, decimal_places=2, blank=False, null=False) # Costo sin caballo
     logistics_cost = models.DecimalField(max_digits=10, decimal_places=2, blank=False, null=False) # Costo con caballo
-    photo = models.ImageField(upload_to='product-photos', default='product-photos/default.png', null=True, blank=True)
     #stock = models.IntegerField(default=0, blank=True, null=True) # <-- Va en la tabla ProductInventory
     minimum_stock = models.IntegerField(blank=False, null=False)
-    size = models.CharField(max_length=10, choices=SIZES, blank=True, null=True)
+    size = models.CharField(max_length=10, blank=True, null=True)
 
     def __str__(self):
         return self.name

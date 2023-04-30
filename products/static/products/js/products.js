@@ -31,6 +31,20 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
   
+  // Agregar los porcentages de costo de logistica
+  const tds = document.querySelectorAll('.logistics_cost_percentage');
+  tds.forEach(td => {
+    // Obtener los valores de datos del elemento HTML
+    const logisticsCost = parseFloat(td.dataset.logisticsCost);
+    const totalCost = parseFloat(td.dataset.totalCost);
+
+    // Calcular el porcentaje
+    const logisticsCostPercentage = (logisticsCost / totalCost) * 100;
+
+    // Insertar el porcentaje en el elemento HTML
+    td.textContent = logisticsCostPercentage.toFixed(2) + '%';
+  });
+
   // Marcar el enlace Products como activo
   const $navLinks = document.querySelectorAll('.nav-link');
   markActiveNavigationLink($navLinks, 'nav-link-products');

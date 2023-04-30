@@ -1,4 +1,5 @@
-from django.http import HttpResponse
+import json
+from django.http import HttpResponse, JsonResponse
 from django.shortcuts import redirect, render
 from django.contrib.auth.decorators import login_required
 
@@ -71,7 +72,26 @@ def products(request):
 def create_product(request):
         
     if request.method == 'GET':
+
         form = ProductForm()
         return render(request, 'products/create-product.html', {
             'form': form,
         })
+    
+    elif request.method == 'POST':
+        
+        if request.user.employee.position in STAFF:
+
+            form = ProductForm(request.POST)
+            if form.is_valid():
+                form.save()
+                return redirect('products:products')
+            else:
+                errors = json.loads(form.errors.as_json())
+                message = ''
+                for field, field_errors in errors.items():
+                    message += f'{field}: {field_errors[0]["message"]}\n'
+                return render(request, 'products/create-product.html', {
+                    'form': form,
+                    'message': message,
+                })

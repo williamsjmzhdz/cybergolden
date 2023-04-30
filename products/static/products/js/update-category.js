@@ -54,7 +54,7 @@ async function updateCategory(id, name) {
   
   try {
     
-    const response = await fetch('/products/update/category', options);
+    const response = await fetch('/products/api/update/category', options);
     const data = await response.json();
 
     if (data.success) {

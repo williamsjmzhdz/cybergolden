@@ -3,6 +3,7 @@ import json
 from django.http import JsonResponse
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.http import require_http_methods
+from django.views.decorators.csrf import csrf_exempt
 from django.core.exceptions import ObjectDoesNotExist
 
 from products.models import Category
@@ -10,6 +11,7 @@ from products.models import Category
 
 STAFF = ['CEO', 'COO']
 
+@csrf_exempt
 @require_http_methods(['POST'])
 @login_required
 def create_category(request):
@@ -40,6 +42,7 @@ def create_category(request):
         return JsonResponse({'success': False, 'message': 'No tienes los permisos necesarios para eliminar categorías.'}),
 
 
+@csrf_exempt
 @require_http_methods(['DELETE'])
 @login_required
 def delete_category(request):
@@ -63,6 +66,7 @@ def delete_category(request):
         return JsonResponse({'success': False, 'message': 'No tienes los permisos necesarios para eliminar categorías.'}),
     
 
+@csrf_exempt
 @require_http_methods(['PUT'])
 @login_required
 def update_category(request):

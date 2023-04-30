@@ -49,7 +49,7 @@ async function createCategory() {
 
   try {
 
-    const response = await fetch('/products/create/category', options);
+    const response = await fetch('/products/api/create/category', options);
     const data = await response.json();
 
     if (data.success) {
