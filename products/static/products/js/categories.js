@@ -10,7 +10,7 @@ document.addEventListener('DOMContentLoaded', () => {
         showCancelButton: true,
         confirmButtonColor: '#3085d6',
         cancelButtonColor: '#d33',
-        confirmButtonText: 'Sí, eliminarlo'
+        confirmButtonText: 'Sí, eliminarla'
       }).then((result) => {
         if (result.isConfirmed) {
           deleteCategory(e.target.dataset.id);

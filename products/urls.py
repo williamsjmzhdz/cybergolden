@@ -22,5 +22,5 @@ urlpatterns = [
     path('api/update/category', api_views.update_category),
 
     # Rutas API para productos
-
+    path('api/delete/product', api_views.delete_product),
 ]

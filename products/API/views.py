@@ -6,7 +6,7 @@ from django.views.decorators.http import require_http_methods
 from django.views.decorators.csrf import csrf_exempt
 from django.core.exceptions import ObjectDoesNotExist
 
-from products.models import Category
+from products.models import Category, Product
 
 
 STAFF = ['CEO', 'COO']
@@ -105,3 +105,27 @@ def update_category(request):
 
     else:
         return JsonResponse({'success': False, 'message': 'No tienes los permisos necesarios para actualizar categorías.'}),
+
+@csrf_exempt
+@require_http_methods(['DELETE'])
+@login_required
+def delete_product(request):
+
+    if request.user.employee.position in STAFF:
+
+        data = json.loads(request.body)
+        product_id = data.get('id', None)
+
+        if product_id is None:
+            return JsonResponse({'success': False, 'message': 'El ID del producto es requerido.'}, status=400)
+
+        try:
+            product = Product.objects.get(id=product_id)
+            product.delete()
+            return JsonResponse({'success': True, 'message': f'El producto "{product.name}" ha sido eliminado correctamente.'}, status=200)
+        except ObjectDoesNotExist:
+            return JsonResponse({'success': False, 'error': f'El producto con el ID "{product_id}" no existe.'}, status=404)
+        
+    else:
+        return JsonResponse({'success': False, 'message': 'No tienes los permisos necesarios para eliminar productos.'}),
+    

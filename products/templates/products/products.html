@@ -9,6 +9,7 @@
 {% endblock %}
 
 {% block content %}
+{% csrf_token %}
 <div class="container-fluid">
   <div id="show-categories-container">
     <div id="products-container">
@@ -18,7 +19,7 @@
         <div class="card-header d-flex justify-content-between align-items-center flex-wrap py-3">
           <p class="text-primary flex-grow-0 flex-shrink-1 m-0 fw-bold">Productos</p>
           <div class="d-flex">
-            <button class="btn btn-danger btn-sm btn-icon delete-row-btn me-3" type="button">
+            <button class="btn btn-danger btn-sm btn-icon delete-row-btn me-3" id="delete-all-products-btn" type="button">
               <i class="far fa-trash-alt"></i>
             </button>
             <a href="{% url 'products:create_product' %}" id="create-category-btn" class="btn btn-primary" type="button">
@@ -61,7 +62,7 @@
                   {% for product in products %}
 
                   <tr>
-                    <th class="text-center"><input type="checkbox"></th>
+                    <th class="text-center"><input type="checkbox" data-product-id="{{ product.id }}" class="product-checkbox"></th>
                     <td class="text-center">{{ product.name }}</td>
                     <td class="text-center">{{ product.category }}</td>
                     <td class="text-center">{{ product.size }}</td>
@@ -84,8 +85,8 @@
                       <button class="btn btn-primary btn-sm" type="button">
                         <i class="far fa-edit"></i>
                       </button>
-                      <button class="btn btn-danger btn-sm" type="button">
-                        <i class="far fa-trash-alt"></i>
+                      <button class="btn btn-danger btn-sm delete-product-btn" data-id="{{ product.id }}" data-name="{{ product.name }}" type="button">
+                        <i class="far fa-trash-alt" data-id="{{ product.id }}" data-name="{{ product.name }}"></i>
                       </button>
                     </td>
                   </tr>
@@ -119,4 +120,5 @@
     <script src="{% static 'users/assets/js/bs-init.js' %}"></script>
     <script src="{% static 'users/assets/js/theme.js' %}"></script>
     <script src="{% static 'products/js/products.js' %}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
 {% endblock %}
