@@ -112,6 +112,7 @@ class ProductForm(forms.ModelForm):
     )
 
     size_choices = [
+        ('Sin talla', [('Sin talla', 'Sin talla')]),
         ('Tallas', [size for size in SIZES]),
         ('Tallas por edad', [size for size in SIZES_BY_AGE])
     ]

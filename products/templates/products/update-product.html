@@ -3,7 +3,7 @@
 {% load static %}
 
 {% block extend_head %}
-<title>Crear producto - Cybergolden</title>
+<title>Actualizar producto - Cybergolden</title>
 <link rel="stylesheet" href="{% static 'users/assets/css/layout.css' %}">
 {% endblock %}
 
@@ -13,10 +13,10 @@
     <div id="create-category-container">
       <div class="card shadow">
         <div class="card-header d-flex justify-content-between align-items-center flex-wrap py-3">
-          <p class="text-primary flex-grow-0 flex-shrink-1 m-0 fw-bold">Crear producto</p>
+          <p class="text-primary flex-grow-0 flex-shrink-1 m-0 fw-bold">Actualizar producto</p>
         </div>
         <div class="card-body">
-          <form id="create-category-form" action="{% url 'products:create_product' %}" method="POST">
+          <form action="{% url 'products:update_product' product.id %}" method="POST">
             {% csrf_token %}
             <div class="mb-3">
 
@@ -45,7 +45,7 @@
               {% endif %}
             </div>
             <div class="mb-3">
-              <button class="btn btn-primary" type="submit" id="submit-create-product-btn">Crear producto</button>
+              <button class="btn btn-primary" type="submit" id="submit-update-product-btn">Actualizar producto</button>
               <button class="btn btn-secondary" type="button" id="cancel-create-product-btn">Cancelar</button>
             </div>
           </form>
@@ -61,5 +61,5 @@
     <script src="{% static 'users/assets/bootstrap/js/bootstrap.min.js' %}"></script>
     <script src="{% static 'users/assets/js/bs-init.js' %}"></script>
     <script src="{% static 'users/assets/js/theme.js' %}"></script>
-    <script src="{% static 'products/js/create-product.js' %}"></script>  
+    <script src="{% static 'products/js/update-product.js' %}"></script>  
 {% endblock %}

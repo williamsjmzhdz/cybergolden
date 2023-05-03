@@ -27,9 +27,9 @@ SIZES = [
 
 # Sizes for age
 SIZES_BY_AGE = [
-    ("N", "NIÑO"),
-    ("J", "JUVENIL"),
-    ("J", "CABALLERO"),
+    ("NIÑO", "NIÑO"),
+    ("JUVENIL", "JUVENIL"),
+    ("CABALLERO", "CABALLERO"),
 ]
 
 
