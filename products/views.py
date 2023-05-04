@@ -67,6 +67,8 @@ def products(request):
         return render(request, 'products/products.html', {
             'products': products,
             'is_staff': request.user.employee.position in STAFF,
+            'is_sell_agent': request.user.employee.position == 'SA',
+            'is_maquila_operator': request.user.employee.position == 'MO', 
         })
     
 @login_required
@@ -141,3 +143,8 @@ def update_product(request, product_id):
     else:
 
         return redirect('products:products')
+    
+
+# Plantillas de inventario
+def inventory(request):
+    return render(request, 'products/inventory.html')

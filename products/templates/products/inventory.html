@@ -1,0 +1,81 @@
+{% extends 'users/layout.html' %}
+
+{% load static %}
+
+{% block extend_head %}
+<title>Productos - Cybergolden</title>
+<link rel="stylesheet" href="{% static 'users/assets/css/layout.css' %}">
+{% endblock %}
+
+{% block content %}
+{% csrf_token %}
+<div class="container-fluid">
+  <div class="card shadow">
+      <div class="card-header py-3">
+          <p class="text-primary m-0 fw-bold">Inventario</p>
+      </div>
+      <div class="card-body">
+          <div class="row">
+              <div class="col-md-6 text-nowrap">
+                  <div class="d-flex flex-wrap dataTables_length" id="dataTable_length" aria-controls="dataTable"><label class="form-label"><select class="d-inline-block form-select form-select-sm">
+                              <option value="toluca" selected="">Toluca</option>
+                              <option value="casa">Casa</option>
+                          </select>&nbsp;</label><label class="form-label"><select class="d-inline-block form-select form-select-sm">
+                              <option value="descending" selected="">Orden descendente</option>
+                              <option value="upward">Orden ascendente</option>
+                          </select>&nbsp;</label></div>
+              </div>
+              <div class="col-md-6">
+                  <div class="text-md-end dataTables_filter" id="dataTable_filter"><label class="form-label"><input type="search" class="form-control form-control-sm" aria-controls="dataTable" placeholder="Buscar producto"></label></div>
+              </div>
+          </div>
+          <div class="table-responsive table mt-2" id="dataTable" role="grid" aria-describedby="dataTable_info">
+              <table class="table my-0" id="dataTable">
+                  <thead>
+                      <tr>
+                          <th>Nombre</th>
+                          <th>Categoría</th>
+                          <th>Talla</th>
+                          <th>Stock</th>
+                      </tr>
+                  </thead>
+                  <tbody>
+                      <tr>
+                          <td>Traje negro</td>
+                          <td>Trajes</td>
+                          <td>40</td>
+                          <td><input type="number" style="width: 50px;border-radius: 5px;border-width: 1px;"></td>
+                      </tr>
+                      <tr>
+                          <td>Traje oxford</td>
+                          <td>Trajes</td>
+                          <td>42</td>
+                          <td><input type="number" style="width: 50px;border-radius: 5px;border-width: 1px;"></td>
+                      </tr>
+                  </tbody>
+                  <tfoot>
+                      <tr></tr>
+                  </tfoot>
+              </table>
+          </div>
+          <div class="row">
+              <div class="col-md-6 d-flex align-self-center justify-content-xl-center align-items-xl-center" style="width: 100%;padding: 0;margin: 0;height: 50px;">
+                  <div class="d-flex d-sm-flex d-md-flex d-lg-flex d-xl-flex justify-content-center align-items-center justify-content-sm-center align-items-sm-center justify-content-md-center align-items-md-center justify-content-lg-center align-items-lg-center justify-content-xl-center align-items-xl-center add-product-to-inventory" style="background: #eeeeee;width: 100%;height: 100%;border-radius: 5px;"><i class="fas fa-plus d-xl-flex justify-content-xl-center align-items-xl-center" style="width: 30px;height: 30px;font-size: 25px;"></i></div>
+              </div>
+          </div>
+          <div class="row">
+              <div class="col-md-6 align-self-center">
+                  <p id="dataTable_info" class="dataTables_info" role="status" aria-live="polite">Información como el total de mercancía, etc.</p>
+              </div>
+          </div>
+      </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+    <script src="{% static 'users/assets/bootstrap/js/bootstrap.min.js' %}"></script>
+    <script src="{% static 'users/assets/js/bs-init.js' %}"></script>
+    <script src="{% static 'users/assets/js/theme.js' %}"></script>
+    <script src="{% static 'products/js/inventory.js' %}"></script>
+{% endblock %}

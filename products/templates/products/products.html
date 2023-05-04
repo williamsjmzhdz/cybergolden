@@ -53,11 +53,15 @@
                   <th class="text-center">Nombre</th>
                   <th class="text-center">Categoría</th>
                   <th class="text-center">Talla</th>
+                  {% if is_staff %} 
                   <th class="text-center">Costo producción/compra</th>
                   <th class="text-center">Costo logística</th>
+                  {% endif %}
+                  {% if is_staff or is_sell_agent %} 
                   <th class="text-center">Costo total</th>
+                  {% endif %}
+                  {% if is_staff %} 
                   <th class="text-center">Margen de logística</th>
-                  {% if is_staff %}
                   <th class="text-center">Acciones</th>
                   {% endif %}
                 </tr>
@@ -73,19 +77,26 @@
                     {% endif %}
                     <td class="text-center searchable">{{ product.name }}</td>
                     <td class="text-center searchable">{{ product.category }}</td>
-                    <td class="text-center searchable">{{ product.size }}</td>                    
+                    <td class="text-center searchable">{{ product.size }}</td>
+                    {% if is_staff %}
                     <td class="text-center">${{ product.production_cost }}</td>
                     <td class="text-center">${{ product.logistics_cost }}</td>
+                    {% endif %}          
+
 
                     {% with total_cost=product.production_cost|add:product.logistics_cost %}
+                      {% if is_staff or is_sell_agent %}
                       <td class="text-center">${{ total_cost|floatformat:"2" }}</td>
+                      {% endif %}
                     {% endwith %}
                     
 
                     {% with total_cost=product.production_cost|add:product.logistics_cost %}
+                      {% if is_staff %}
                       <td class="text-center logistics_cost_percentage" data-logistics-cost="{{ product.logistics_cost }}" data-total-cost="{{ total_cost }}">
                        <!-- Porcentaje insertado con JS --> 
                       </td>
+                      {% endif %}
                     {% endwith %}
 
                     {% if is_staff %}

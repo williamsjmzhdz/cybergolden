@@ -43,6 +43,24 @@
                 ><i class="fas fa-shopping-bag"></i><span>Productos</span></a
               >
             </li>
+            <li class="nav-item">
+              <a id="nav-link-inventory" class="nav-link" href="{% url 'products:inventory' %}">
+                <i class="fas fa-clipboard-list"></i><span>Inventario</span>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a id="nav-link-cuts" class="nav-link" href="#">
+                <i class="fas fa-cut"></i>
+                <span>Cortes</span>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a id="nav-link-sales" class="nav-link" href="#">
+                <i class="fas fa-chart-bar"></i>
+                <span>Ventas</span>
+              </a>
+            </li>
+                                    
           </ul>
           <div class="text-center d-none d-md-inline">
             <button
@@ -337,6 +355,12 @@
         {% block content %}
 
         {% endblock %}
+        <footer class="bg-white sticky-footer">
+          <div class="container my-auto">
+              <div class="text-center my-auto copyright"><span>Copyright © Cybergolden 2023</span></div>
+          </div>
+        </footer>
+        </div><a class="border rounded d-inline scroll-to-top" href="#page-top"><i class="fas fa-angle-up"></i></a>
       </div>
 
     </div>
