@@ -25,12 +25,19 @@ SIZES = [
     ("50", "50"),
 ]
 
+# Sizes for age
+SIZES_BY_AGE = [
+    ("NIÑO", "NIÑO"),
+    ("JUVENIL", "JUVENIL"),
+    ("CABALLERO", "CABALLERO"),
+]
+
 
 class Category(models.Model):
     """
     Model that represents a category in the database.
     """
-    name = models.CharField(max_length=100, blank=False, null=False)
+    name = models.CharField(max_length=100, unique=True, blank=False, null=False)
 
     def __str__(self):
         return self.name
@@ -42,13 +49,12 @@ class Product(models.Model):
     """
     name = models.CharField(max_length=100, blank=False, null=False)
     category = models.ForeignKey(Category, on_delete=models.CASCADE, blank=True, null=True)
-    available = models.BooleanField(default=True)
-    production_cost = models.DecimalField(max_digits=10, decimal_places=2, blank=False, null=False)
-    logistics_cost = models.DecimalField(max_digits=10, decimal_places=2, blank=False, null=False)
-    photo = models.ImageField(upload_to='product-photos', default='product-photos/default.png', null=True, blank=True)
-    stock = models.IntegerField(default=0, blank=True, null=True)
+    #available = models.BooleanField(default=True) <-- Va en la tabla ProductInventory
+    production_cost = models.DecimalField(max_digits=10, decimal_places=2, blank=False, null=False) # Costo sin caballo
+    logistics_cost = models.DecimalField(max_digits=10, decimal_places=2, blank=False, null=False) # Costo con caballo
+    #stock = models.IntegerField(default=0, blank=True, null=True) # <-- Va en la tabla ProductInventory
     minimum_stock = models.IntegerField(blank=False, null=False)
-    size = models.CharField(max_length=10, choices=SIZES, blank=True, null=True)
+    size = models.CharField(max_length=10, blank=True, null=True)
 
     def __str__(self):
         return self.name

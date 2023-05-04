@@ -1,7 +1,11 @@
 document.addEventListener('DOMContentLoaded', () => {
 
+  const $navLinks = document.querySelectorAll('.nav-link');
+
   const $saveBtn = document.getElementById('save-btn');
   $saveBtn.onclick = update;
+
+  markActiveNavigationLink($navLinks, 'nav-link-profile');
 
 })
 
@@ -34,7 +38,7 @@ async function update() {
     const response = await fetch('/users/update/', options);
     const data = await response.json();
 
-    showAlert(data);
+    handleAlert(data);
 
     if (data.status === 'success') {
       cleanFields(username, email, phone_number);
@@ -45,14 +49,14 @@ async function update() {
   }
 }
 
-function showAlert(data) {
+function handleAlert(data) {
 
     const $successAlert = document.getElementById('alert-success');
     const $warningAlert = document.getElementById('alert-warning');
     
     if (data.status === 'success') {
 
-      showPersonalInfoAlert($successAlert, $warningAlert, data.message);
+      showAlert($successAlert, $warningAlert, data.message);
 
       setTimeout(function() {
         $successAlert.style.display = "none";
@@ -61,7 +65,7 @@ function showAlert(data) {
 
     } else if (data.status === 'error') {
 
-      showPersonalInfoAlert($warningAlert, $successAlert, data.message);
+      showAlert($warningAlert, $successAlert, data.message);
 
     }
 
@@ -87,11 +91,21 @@ function cleanFields(username, email, phone_number) {
 
 }
 
-function showPersonalInfoAlert($alertToShow, $alertToHide, message) {
+function showAlert($alertToShow, $alertToHide, message) {
 
   $alertToHide.style.display = 'none';
 
   $alertToShow.innerText = message;
   $alertToShow.style.display = 'block';
 
+}
+
+function markActiveNavigationLink($navLinks, activeLink) {
+  $navLinks.forEach($navLink => {
+    if ($navLink.id === activeLink) {
+      $navLink.classList.add('active');
+    } else {
+      $navLink.classList.remove('active');
+    }
+  });
 }

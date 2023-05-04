@@ -26,7 +26,7 @@ def update(request):
   phone_number_regex = r'^([0-9]{2})?-?([0-9]{4})-?([0-9]{4})$'
   
   if not username and not email and not phone_number:
-    return JsonResponse({'status': 'error','message': 'Proporcione un nombre de usuario, una dirección de correo electrónico o un número de teléfono.'}, status=400)
+    return JsonResponse({'status': 'error','message': 'Proporcione un nombre de usuario, una dirección de correo electrónico o un número de teléfono.\n'}, status=400)
   
   # Initialize the error flag to False and initialize the response message
   error = False
@@ -36,7 +36,7 @@ def update(request):
     update_username = True
     if not re.match(username_regex, username):
       error = True
-      message += ' El nombre de usuario debe contener entre 1 y 150 caracteres alfanuméricos, incluyendo los símbolos @ . + - '
+      message += ' El nombre de usuario debe contener entre 1 y 150 caracteres alfanuméricos, incluyendo los símbolos @ . + -.\n'
   else:
     update_username = False
 
@@ -44,7 +44,7 @@ def update(request):
     update_email = True
     if not re.match(email_regex, email):
       error = True
-      message += ' El correo electrónico ingresado no es válido. Asegúrese de que tenga un formato válido (por ejemplo, usuario@dominio.com). '
+      message += ' El correo electrónico ingresado no es válido. Asegúrese de que tenga un formato válido (por ejemplo, usuario@dominio.com).\n'
   else:
     update_email = False
 
@@ -52,7 +52,7 @@ def update(request):
     update_phone_number = True
     if not re.match(phone_number_regex, phone_number):
       error = True
-      message += ' El número telefónico debe tener 10 dígitos y puede estar en formato xx-xxxx-xxxx o xxxxxxxxxx. '
+      message += ' El número telefónico debe tener 10 dígitos y puede estar en formato xx-xxxx-xxxx o xxxxxxxxxx.\n'
   else:
     update_phone_number = False
       

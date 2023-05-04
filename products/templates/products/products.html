@@ -1,0 +1,153 @@
+{% extends 'users/layout.html' %}
+
+{% load static %}
+
+{% block extend_head %}
+<title>Productos - Cybergolden</title>
+<link rel="stylesheet" href="{% static 'users/assets/css/layout.css' %}">
+<link rel="stylesheet" href="{% static 'products/css/products.css' %}">
+{% endblock %}
+
+{% block content %}
+{% csrf_token %}
+<div class="container-fluid">
+  <div id="show-categories-container">
+    <div id="products-container">
+      <div class="card shadow">
+
+        <!-- Encabezado de la tarjeta -->
+        <div class="card-header d-flex justify-content-between align-items-center flex-wrap py-3">
+          <p class="text-primary flex-grow-0 flex-shrink-1 m-0 fw-bold">Productos</p>
+          {% if is_staff %}
+          <div class="d-flex">
+            <button class="btn btn-danger btn-sm btn-icon delete-row-btn me-3" id="delete-all-products-btn" type="button">
+              <i class="far fa-trash-alt"></i>
+            </button>
+            <a href="{% url 'products:create_product' %}" id="create-category-btn" class="btn btn-primary" type="button">
+              <i class="fas fa-plus"></i>&nbsp;Crear producto
+            </a>
+          </div>
+          {% endif %}
+        </div>
+
+        <!-- Cuerpo de la tarjeta -->
+        <div class="card-body">
+
+          <!-- Barra de búsqueda -->
+          <div class="row mb-3">
+            <div class="col-md-4">
+              <div class="input-group">
+                <input id="searchInput" type="text" class="form-control form-control-sm" placeholder="Buscar producto...">
+              </div>
+            </div>
+          </div>
+
+          <!-- Tabla -->
+          <div class="table-responsive table mt-2" id="dataTable" role="grid" aria-describedby="dataTable_info">
+            <table class="table my-0" id="dataTable">
+              <thead>
+                <tr>        
+                  {% if is_staff %}       
+                  <th class="text-center"><input type="checkbox"></th>
+                  {% endif %}
+                  <th class="text-center">Nombre</th>
+                  <th class="text-center">Categoría</th>
+                  <th class="text-center">Talla</th>
+                  {% if is_staff %} 
+                  <th class="text-center">Costo producción/compra</th>
+                  <th class="text-center">Costo logística</th>
+                  {% endif %}
+                  {% if is_staff or is_sell_agent %} 
+                  <th class="text-center">Costo total</th>
+                  {% endif %}
+                  {% if is_staff %} 
+                  <th class="text-center">Margen de logística</th>
+                  <th class="text-center">Acciones</th>
+                  {% endif %}
+                </tr>
+              </thead>
+              <tbody>
+                {% if products %}
+
+                  {% for product in products %}
+
+                  <tr>
+                    {% if is_staff %}
+                    <th class="text-center"><input type="checkbox" data-product-id="{{ product.id }}" class="product-checkbox"></th>
+                    {% endif %}
+                    <td class="text-center searchable">{{ product.name }}</td>
+                    <td class="text-center searchable">{{ product.category }}</td>
+                    <td class="text-center searchable">{{ product.size }}</td>
+                    {% if is_staff %}
+                    <td class="text-center">${{ product.production_cost }}</td>
+                    <td class="text-center">${{ product.logistics_cost }}</td>
+                    {% endif %}          
+
+
+                    {% with total_cost=product.production_cost|add:product.logistics_cost %}
+                      {% if is_staff or is_sell_agent %}
+                      <td class="text-center">${{ total_cost|floatformat:"2" }}</td>
+                      {% endif %}
+                    {% endwith %}
+                    
+
+                    {% with total_cost=product.production_cost|add:product.logistics_cost %}
+                      {% if is_staff %}
+                      <td class="text-center logistics_cost_percentage" data-logistics-cost="{{ product.logistics_cost }}" data-total-cost="{{ total_cost }}">
+                       <!-- Porcentaje insertado con JS --> 
+                      </td>
+                      {% endif %}
+                    {% endwith %}
+
+                    {% if is_staff %}
+                      <td class="text-center">
+                        <a
+                        href="{% url 'products:update_product' product.id %}"
+                        class="btn btn-primary btn-sm update-product-btn"
+                        data-id="{{ product.id }}"
+                        data-name="{{ product.name }}"
+                        type="button"
+                        ><i
+                          class="far fa-edit"
+                          data-id="{{ product.id }}"
+                          data-name="{{ product.name }}"
+                        ></i
+                      ></a>
+                        <button class="btn btn-danger btn-sm delete-product-btn" data-id="{{ product.id }}" data-name="{{ product.name }}" type="button">
+                          <i class="far fa-trash-alt" data-id="{{ product.id }}" data-name="{{ product.name }}"></i>
+                        </button>
+                      </td>
+                    {% endif %}
+                  </tr>
+                  
+
+                  {% endfor %}
+
+                {% else %}
+
+                    <p>No hay productos para mostrar.</p>
+
+                {% endif %}
+              </tbody>
+
+            </table>
+          </div>
+          
+          
+          
+          
+          
+            
+
+      </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+    <script src="{% static 'users/assets/bootstrap/js/bootstrap.min.js' %}"></script>
+    <script src="{% static 'users/assets/js/bs-init.js' %}"></script>
+    <script src="{% static 'users/assets/js/theme.js' %}"></script>
+    <script src="{% static 'products/js/products.js' %}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+{% endblock %}

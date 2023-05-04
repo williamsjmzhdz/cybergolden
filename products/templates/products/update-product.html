@@ -1,0 +1,65 @@
+{% extends 'users/layout.html' %}
+
+{% load static %}
+
+{% block extend_head %}
+<title>Actualizar producto - Cybergolden</title>
+<link rel="stylesheet" href="{% static 'users/assets/css/layout.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+  <div id="show-categories-container">
+    <div id="create-category-container">
+      <div class="card shadow">
+        <div class="card-header d-flex justify-content-between align-items-center flex-wrap py-3">
+          <p class="text-primary flex-grow-0 flex-shrink-1 m-0 fw-bold">Actualizar producto</p>
+        </div>
+        <div class="card-body">
+          <form action="{% url 'products:update_product' product.id %}" method="POST">
+            {% csrf_token %}
+            <div class="mb-3">
+
+              <label class="form-label" for="name">Nombre</label>
+              {{ form.name }}
+
+              <label class="form-label" for="category" style="margin-top: 10px;">Categoría</label>
+              {{ form.category }}
+
+              <label class="form-label" for="production-cost" style="margin-top: 10px;">Costo de producción/compra</label>
+              {{ form.production_cost }}
+
+              <label class="form-label" for="logistic-cost" style="margin-top: 10px;">Costo de logística</label>
+              {{ form.logistics_cost }}
+
+              <label class="form-label" for="minimum-stock" style="margin-top: 10px;">Stock mínimo</label>
+              {{ form.minimum_stock }}
+
+              <label class="form-label" for="size" style="margin-top: 10px;">Talla</label>
+              {{ form.size }}
+              
+              {% if message %}
+                <small class="form-text text-muted" style="color: tomato !important;" id="repeated-name-alert">
+                  {{ message }}
+                </small>
+              {% endif %}
+            </div>
+            <div class="mb-3">
+              <button class="btn btn-primary" type="submit" id="submit-update-product-btn">Actualizar producto</button>
+              <button class="btn btn-secondary" type="button" id="cancel-create-product-btn">Cancelar</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+    <script src="{% static 'users/assets/bootstrap/js/bootstrap.min.js' %}"></script>
+    <script src="{% static 'users/assets/js/bs-init.js' %}"></script>
+    <script src="{% static 'users/assets/js/theme.js' %}"></script>
+    <script src="{% static 'products/js/update-product.js' %}"></script>  
+{% endblock %}

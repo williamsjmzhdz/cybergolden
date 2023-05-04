@@ -1,0 +1,46 @@
+.category-table {
+  margin-top: 2rem;
+}
+
+.caption-top {
+  caption-side: top;
+  text-align: center; /* Alinear la etiqueta de la tabla en el centro */
+  font-weight: bold; /* Hacer que el texto de la etiqueta sea más grande */
+  padding: 1rem; /* Agregar espacio alrededor de la etiqueta */
+}
+
+.category-name {
+  font-weight: bold;
+}
+
+.delete-category-btn,
+.update-category-btn,
+.view-category-btn {
+  margin-right: 0.5rem;
+}
+
+.view-category-btn {
+  color: #fff; /* Cambiar el color del ícono a blanco */
+}
+
+.view-category-btn:hover {
+  color: #fff; /* Cambiar el color del ícono a blanco en hover */
+}
+
+.btn-success {
+  background-color: #28a745; /* Cambiar el color del botón a verde */
+  border-color: #28a745; /* Cambiar el color del borde del botón a verde */
+}
+
+.hoverable-row {
+  cursor: pointer;
+}
+
+.view-category-btn {
+  background-color: green;
+  color: white;
+}
+
+.categories-table:last-child td {
+  border-bottom: none !important;
+}
