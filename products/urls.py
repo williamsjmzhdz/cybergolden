@@ -19,6 +19,7 @@ urlpatterns = [
 
     # Plantillas de inventario
     path('inventory/', views.inventory, name='inventory'),
+    path('create/inventory', views.create_inventory, name='create_inventory'),
 
     # Rutas API para categorías
     path('api/create/category', api_views.create_category),

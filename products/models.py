@@ -58,3 +58,12 @@ class Product(models.Model):
 
     def __str__(self):
         return self.name
+    
+class Inventory(models.Model):
+    """
+    Model that represents a inventory in the database.
+    """
+    name = models.CharField(max_length=100, unique=True, blank=False, null=False)
+
+    def __str__(self):
+        return self.name

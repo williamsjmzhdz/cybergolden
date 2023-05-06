@@ -1,5 +1,5 @@
 from django import forms
-from products.models import Category, Product, SIZES, SIZES_BY_AGE
+from products.models import Category, Product, Inventory, SIZES, SIZES_BY_AGE
 
 
 class CategoryForm(forms.ModelForm):
@@ -128,3 +128,26 @@ class ProductForm(forms.ModelForm):
                 },
             ),
         )
+
+
+class InventoryForm(forms.ModelForm):
+  '''
+  Form that handle inventory creation.
+  '''
+
+  class Meta:
+      model = Inventory
+      fields = ('name',)
+
+  name = forms.CharField(max_length=100, required=True, label='',
+    widget=forms.TextInput(attrs={
+      'placeholder': 'Nombre del inventario...', 
+      'name': 'name', 
+      'type': 'text', 
+      'class': 'form-control',
+      'id': 'name',
+      'style': 'margin: 5px; width: 100%;',
+    }),
+    error_messages={
+      'unique': 'Ya existe un inventario con este nombre. Por favor ingrese otro nombre.'
+    })

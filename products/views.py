@@ -3,8 +3,8 @@ from django.http import HttpResponse
 from django.shortcuts import redirect, render
 from django.contrib.auth.decorators import login_required
 
-from products.forms import CategoryForm, ProductForm
-from products.models import Category, Product
+from products.forms import CategoryForm, ProductForm, InventoryForm
+from products.models import Category, Product, Inventory
 
 
 STAFF = ['CEO', 'COO']
@@ -146,5 +146,45 @@ def update_product(request, product_id):
     
 
 # Plantillas de inventario
+@login_required
 def inventory(request):
-    return render(request, 'products/inventory.html')
+    inventories = Inventory.objects.all()
+    return render(request, 'products/inventory.html', {
+        'inventories': inventories,
+    })
+
+
+@login_required
+def create_inventory(request):
+
+    if request.user.employee.position in STAFF:
+        
+        if request.method == 'GET':
+
+            return render(request, 'products/create_inventory.html', {
+                'form': InventoryForm()
+            })
+        
+        elif request.method == 'POST':
+                        
+            form = InventoryForm(request.POST)
+
+            if form.is_valid():
+
+                form.save()
+                return redirect('products:inventory')
+            
+            else:
+                
+                errors = json.loads(form.errors.as_json())
+                message = ''
+                for field, field_errors in errors.items():
+                    message += f'{field}: {field_errors[0]["message"]}\n'
+                return render(request, 'products/create-inventory.html', {
+                    'form': form,
+                    'message': message,
+                })
+        
+    else:
+
+        return redirect('products:inventory')
