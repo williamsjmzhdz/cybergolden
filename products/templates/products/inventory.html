@@ -15,15 +15,22 @@
 <div class="container-fluid">
     <div class="card shadow">
         <div class="card-header d-flex justify-content-between align-items-center flex-wrap py-3">
-            <p class="text-primary flex-grow-0 flex-shrink-1 m-0 fw-bold">Inventario</p>
+            <p class="text-primary flex-grow-0 flex-shrink-1 m-0 fw-bold" style="margin-bottom: 10px !important;">Inventario</p>
             <div class="d-flex">
-                <button class="btn btn-danger btn-sm btn-icon delete-row-btn me-3" id="delete-selected-inventory-btn" type="button">
+                <button class="btn btn-danger btn-sm btn-icon delete-row-btn me-3" id="delete-selected-inventory-btn" type="button" style="margin: 0 !important;">
                     <i class="far fa-trash-alt"></i>
                 </button>
-              <a href="{% url 'products:create_inventory' %}" id="create-inventory-btn" class="btn btn-primary" type="button">
-                <i class="fas fa-plus"></i>&nbsp;Crear inventario
-              </a>
+                <a class="btn btn-primary btn-sm btn-icon edit-row-btn ms-3 me-3" type="button" id="update-selected-inventory-btn">
+                    <i class="fas fa-edit"></i>
+                </a>
+                <a href="{% url 'products:create_inventory' %}" id="create-inventory-btn" class="btn btn-primary" type="button">
+                    <i class="fas fa-plus"></i>&nbsp;Crear inventario
+                </a>
             </div>
+            
+            
+            
+            
         </div>
         
         
@@ -40,7 +47,7 @@
                         <select class="form-select form-select-sm" id="select-inventory">
                             {% if inventories %}
                                 {% for inventory in inventories %}
-                                    <option value="{{ inventory }}" {% if loop.first %}selected{% endif %}>{{ inventory }}</option>
+                                    <option value="{{ inventory }}" data-id="{{ inventory.id }}" {% if loop.first %}selected{% endif %}>{{ inventory }}</option>
                                 {% endfor %}
                             {% else %}
                                 <option value="empty" selected>Sin inventarios</option>

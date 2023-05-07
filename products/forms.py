@@ -148,6 +148,4 @@ class InventoryForm(forms.ModelForm):
       'id': 'name',
       'style': 'margin: 5px; width: 100%;',
     }),
-    error_messages={
-      'unique': 'Ya existe un inventario con este nombre. Por favor ingrese otro nombre.'
-    })
+  )

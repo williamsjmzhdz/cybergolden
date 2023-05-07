@@ -2,6 +2,7 @@ import json
 from django.http import HttpResponse
 from django.shortcuts import redirect, render
 from django.contrib.auth.decorators import login_required
+from django.views.decorators.csrf import csrf_exempt
 
 from products.forms import CategoryForm, ProductForm, InventoryForm
 from products.models import Category, Product, Inventory
@@ -72,6 +73,7 @@ def products(request):
         })
     
 @login_required
+@csrf_exempt
 def create_product(request):
 
     if request.user.employee.position in STAFF:
@@ -108,6 +110,7 @@ def create_product(request):
         return redirect('products:products')
             
 @login_required
+@csrf_exempt
 def update_product(request, product_id):
 
     if request.user.employee.position in STAFF:
@@ -155,13 +158,14 @@ def inventory(request):
 
 
 @login_required
+@csrf_exempt
 def create_inventory(request):
 
     if request.user.employee.position in STAFF:
         
         if request.method == 'GET':
 
-            return render(request, 'products/create_inventory.html', {
+            return render(request, 'products/create-inventory.html', {
                 'form': InventoryForm()
             })
         
@@ -176,15 +180,54 @@ def create_inventory(request):
             
             else:
                 
-                errors = json.loads(form.errors.as_json())
-                message = ''
-                for field, field_errors in errors.items():
-                    message += f'{field}: {field_errors[0]["message"]}\n'
                 return render(request, 'products/create-inventory.html', {
                     'form': form,
-                    'message': message,
+                    'message': 'Ya existe un inventario con este nombre. Por favor ingrese otro nombre.',
                 })
         
     else:
 
         return redirect('products:inventory')
+
+@login_required
+@csrf_exempt
+def update_product(request, product_id):
+
+    if request.user.employee.position in STAFF:
+        
+        product = Product.objects.get(id=product_id)
+
+        if request.method == 'GET':
+
+            form = ProductForm(instance=product)
+
+            return render(request, 'products/update-product.html', {
+                'form': form,
+                'product': product,
+            })
+        
+        elif request.method == 'POST':
+
+            form = ProductForm(request.POST, instance=product)
+
+            if form.is_valid():
+                form.save()
+                return redirect('products:products')
+            else:
+                errors = json.loads(form.errors.as_json())
+                message = ''
+                for field, field_errors in errors.items():
+                    message += f'{field}: {field_errors[0]["message"]}\n'
+                return render(request, 'products/update-product.html', {
+                    'form': form,
+                    'message': message,
+                })
+    
+    else:
+
+        return redirect('products:products')
+
+@login_required
+@csrf_exempt
+def update_inventory(request, inventory_id):
+    return render(request, 'products/update-inventory.html')

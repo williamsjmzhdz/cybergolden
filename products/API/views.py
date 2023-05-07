@@ -6,7 +6,7 @@ from django.views.decorators.http import require_http_methods
 from django.views.decorators.csrf import csrf_exempt
 from django.core.exceptions import ObjectDoesNotExist
 
-from products.models import Category, Product
+from products.models import Category, Product, Inventory
 
 
 STAFF = ['CEO', 'COO']
@@ -129,3 +129,26 @@ def delete_product(request):
     else:
         return JsonResponse({'success': False, 'message': 'No tienes los permisos necesarios para eliminar productos.'}),
     
+
+@csrf_exempt
+@require_http_methods(['DELETE'])
+@login_required
+def delete_inventory(request):
+
+    if request.user.employee.position in STAFF:
+
+        data = json.loads(request.body)
+        inventory_id = data.get('id', None)
+
+        if inventory_id is None:
+            return JsonResponse({'success': False, 'message': 'El ID del inventario es requerido.'}, status=400)
+
+        try:
+            inventory = Inventory.objects.get(id=inventory_id)
+            inventory.delete()
+            return JsonResponse({'success': True, 'message': f'El inventario "{inventory.name}" ha sido eliminado correctamente.'}, status=200)
+        except ObjectDoesNotExist:
+            return JsonResponse({'success': False, 'message': f'El inventario con el ID "{inventory_id}" no existe.'}, status=404)
+        
+    else:
+        return JsonResponse({'success': False, 'message': 'No tienes los permisos necesarios para eliminar inventarios.'}),
