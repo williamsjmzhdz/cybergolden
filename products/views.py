@@ -5,7 +5,7 @@ from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_exempt
 
 from products.forms import CategoryForm, ProductForm, InventoryForm
-from products.models import Category, Product, Inventory
+from products.models import Category, Product, Inventory, Stock
 
 
 STAFF = ['CEO', 'COO']
@@ -91,7 +91,12 @@ def create_product(request):
 
             if form.is_valid():
 
-                form.save()
+                product = form.save()
+
+                inventories = Inventory.objects.all()
+                for inventory in inventories:
+                    Stock.objects.create(inventory=inventory, product=product, stock=0)
+
                 return redirect('products:products')
             
             else:
@@ -108,6 +113,7 @@ def create_product(request):
     else:
 
         return redirect('products:products')
+
             
 @login_required
 @csrf_exempt
@@ -175,7 +181,12 @@ def create_inventory(request):
 
             if form.is_valid():
 
-                form.save()
+                inventory = form.save()
+
+                products = Product.objects.all()
+                for product in products:
+                    Stock.objects.create(inventory=inventory, product=product, stock=0)
+
                 return redirect('products:inventory')
             
             else:
@@ -188,6 +199,7 @@ def create_inventory(request):
     else:
 
         return redirect('products:inventory')
+
 
 @login_required
 @csrf_exempt

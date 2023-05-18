@@ -32,4 +32,5 @@ urlpatterns = [
 
     # Rutas API para inventarios
     path('api/delete/inventory', api_views.delete_inventory),
+    path('api/get/products/inventory/<int:inventory_id>', api_views.get_products_inventory),
 ]

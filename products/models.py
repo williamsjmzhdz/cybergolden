@@ -30,6 +30,8 @@ SIZES_BY_AGE = [
     ("NIÑO", "NIÑO"),
     ("JUVENIL", "JUVENIL"),
     ("CABALLERO", "CABALLERO"),
+    ("XL", "XL"),
+    ("XXL", "XXL"),
 ]
 
 
@@ -67,3 +69,20 @@ class Inventory(models.Model):
 
     def __str__(self):
         return self.name
+    
+class Stock(models.Model):
+    """
+    Model that represents a stock in the database
+    """
+
+    inventory = models.ForeignKey(Inventory, on_delete=models.CASCADE)
+    product = models.ForeignKey(Product, on_delete=models.CASCADE)
+    stock = models.IntegerField()
+
+    def serialize(self):
+        return {
+            'name': self.product.name,
+            'category': self.product.category.name,
+            'size': self.product.size,
+            'stock': self.stock,
+        }
