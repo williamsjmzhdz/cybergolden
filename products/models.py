@@ -81,6 +81,7 @@ class Stock(models.Model):
 
     def serialize(self):
         return {
+            'product_id': self.product.id,
             'name': self.product.name,
             'category': self.product.category.name,
             'size': self.product.size,

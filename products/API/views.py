@@ -177,3 +177,31 @@ def get_products_inventory(request, inventory_id):
 
     except ObjectDoesNotExist:
         return JsonResponse({'success': False, 'message': f'El inventario con el ID "{inventory_id}" no existe.'}, status=404)
+    
+
+@require_http_methods(['PUT'])
+@login_required
+def update_product_stock(request):
+
+    data = json.loads(request.body)
+    product_id = data.get('product_id')
+    inventory_id = data.get('inventory_id')
+    new_stock = data.get('newValue')
+
+    try:
+        stock = Stock.objects.get(product_id=product_id, inventory_id=inventory_id)
+        stock.stock = new_stock
+        stock.save()
+
+        response_data = {
+            'success': True,
+            'message': 'Existencia actualizada correctamente.',
+        }
+        return JsonResponse(response_data)
+
+    except Stock.DoesNotExist:
+        response_data = {
+            'success': False,
+            'message': 'No existe un registro en la base de datos.',
+        }
+        return JsonResponse(response_data, status=404)
