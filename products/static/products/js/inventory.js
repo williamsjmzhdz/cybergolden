@@ -29,6 +29,48 @@ document.addEventListener('DOMContentLoaded', () => {
 
   });
 
+  // Obtener el elemento select
+  const selectElement = document.getElementById('sortOrder');
+
+  // Agregar un evento change al select
+  selectElement.addEventListener('change', function() {
+    // Obtener el valor de la opción seleccionada
+    const selectedOrder = this.value;
+    
+    // Ejecutar la función changeOrder con el valor de la opción seleccionada
+    changeOrder(selectedOrder);
+  });
+
+  // Función changeOrder
+  function changeOrder(order) {
+    // const selectInventory = document.getElementById('select-inventory');
+    // const selectedIndex = selectInventory.selectedIndex;
+    // const selectedOption = selectInventory.options[selectedIndex];
+    // const inventoryId = selectedOption.getAttribute('data-id');
+
+    // const url = `/products/api/get/ordered/products/${order}/${inventoryId}`;
+
+    // try {
+    //   const response = await fetch(url);
+    //   const data = await response.json();
+
+    //   // Procesa la respuesta de la petición
+    //   const inventory = data.inventory;
+    //   for (const key in inventory) {
+    //       if (inventory.hasOwnProperty(key)) {
+    //           const stock = inventory[key];
+    //           console.log(stock);
+    //       }
+    //   }
+    // } catch (error) {
+    //   // Maneja el error en caso de que ocurra
+    //   console.error(error);
+    // }
+
+    // Código para ordenar los productos del inventario.
+    console.log('changeOrder');
+  }
+
   const $navLinks = document.querySelectorAll('.nav-link');
   markActiveNavigationLink($navLinks, 'nav-link-inventory');
   
@@ -122,9 +164,9 @@ async function showInventoryProducts(inventoryId) {
         if (data.inventory.hasOwnProperty(key)) {
           const innerDictionary = data.inventory[key];
           const tr = document.createElement('tr');
+          tr.classList.add('tableRow');
 
           let productId; // Declare a variable to store product_id
-          console.log(innerDictionary);
 
           for (const innerKey in innerDictionary) {
             if (innerDictionary.hasOwnProperty(innerKey)) {
@@ -141,6 +183,10 @@ async function showInventoryProducts(inventoryId) {
                 tr.appendChild(td);
               } else if (innerKey != 'product_id') {
                 td.innerText = `${value}`;
+                if (innerKey === 'stock') {
+                  td.classList.add('stock-input');
+                  td.setAttribute('value', value);
+                }
                 tr.appendChild(td);
               }
             }
@@ -161,9 +207,36 @@ async function showInventoryProducts(inventoryId) {
           const newValue = event.target.value;
 
           // Llamar a la función changeStock con los parámetros adecuados
-          changeStock(product_id, inventory_id, newValue);
+          const success = changeStock(product_id, inventory_id, newValue);
+          
+          // Si se actualizó el inventario, se actualiza el valor del input o td.
+          if (success) {
+            event.target.setAttribute('value', newValue);
+          }
         });
       });
+
+      // Agrega manejador de evento al checkbox 'No mostrar productos sin existencia'.
+      const checkbox = document.getElementById('showNoStock');
+      const rows = document.querySelectorAll('tbody .tableRow');
+
+      checkbox.addEventListener('change', function() {
+
+        const isChecked = checkbox.checked;
+        
+        rows.forEach(row => {
+
+          const stockInput = row.querySelector('.stock-input');
+          const stockValue = parseInt(stockInput.getAttribute('value'));
+          
+          if (isChecked && stockValue === 0) {
+            row.style.display = 'none';
+          } else {
+            row.style.display = 'table-row';
+          }
+        });
+      });
+
 
     }
 
@@ -189,36 +262,41 @@ function getSelectedInventoryId() {
 }
 
 async function changeStock(product_id, inventory_id, newValue) {
-
-  data = {
-    'product_id': product_id,
-    'inventory_id': inventory_id,
-    'newValue': newValue,
-  }
-  
-  // Get the CSRF token
-  const csrfToken = document.getElementsByName('csrfmiddlewaretoken')[0].value;
-
-  const options = {
-    method: 'PUT',
-    body: JSON.stringify(data),
-    headers: {
-      'Content-Type': 'application/json',
-      'X-CSRFToken': csrfToken
-    }
-  };
-
   try {
+    const data = {
+      'product_id': product_id,
+      'inventory_id': inventory_id,
+      'newValue': newValue,
+    };
 
-    // Get inventory products
+    // Get the CSRF token
+    const csrfToken = document.getElementsByName('csrfmiddlewaretoken')[0].value;
+
+    const options = {
+      method: 'PUT',
+      body: JSON.stringify(data),
+      headers: {
+        'Content-Type': 'application/json',
+        'X-CSRFToken': csrfToken
+      }
+    };
+
+    // Send the request to update the product stock
     const response = await fetch(`/products/api/update/product/stock`, options);
-    const data = await response.json();
+    const responseData = await response.json();
 
+    if (response.ok) {
+      // Check if the response indicates success
+      if (responseData.success) {
+        return true; // Successfully updated stock
+      } else {
+        throw new Error(responseData.message); // Error message from the server
+      }
+    } else {
+      throw new Error(response.statusText); // Error status text from the server
+    }
   } catch (error) {
-
-    alert(error);
-    
+    console.error(error);
+    return false; // Error occurred during the request
   }
-
-
 }

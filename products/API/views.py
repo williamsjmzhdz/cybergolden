@@ -5,7 +5,7 @@ from django.contrib.auth.decorators import login_required
 from django.views.decorators.http import require_http_methods
 from django.views.decorators.csrf import csrf_exempt
 from django.core.exceptions import ObjectDoesNotExist
-
+from django.db.models import F
 from products.models import Category, Product, Inventory, Stock
 
 
@@ -158,8 +158,6 @@ def delete_inventory(request):
 @login_required
 def get_products_inventory(request, inventory_id):
 
-    
-
     if inventory_id is None:
         return JsonResponse({'success': False, 'message': 'El ID del inventario es requerido.'}, status=400)
 
@@ -205,3 +203,33 @@ def update_product_stock(request):
             'message': 'No existe un registro en la base de datos.',
         }
         return JsonResponse(response_data, status=404)
+
+'''@require_http_methods({'GET'})
+@login_required
+def get_ordered_products_inventory(request, order, inventory_id):
+
+    if inventory_id is None:
+        return JsonResponse({'success': False, 'message': 'El ID del inventario es requerido.'}, status=400)
+
+    if order is None:
+        return JsonResponse({'success': False, 'message': 'El orden del inventario es requerido.'}, status=400)
+
+    try:
+        data = {}
+
+        inventory = Inventory.objects.get(id=inventory_id)
+
+        if order == 'upward_stock':
+            stocks = Stock.objects.filter(inventory=inventory).order_by(F('stock').asc())
+        
+        if order == 'descending_stock':
+            stocks = Stock.objects.filter(inventory=inventory).order_by(F('stock').desc())
+
+        for stock in stocks:
+            data[stock.id] = stock.serialize()
+
+        return JsonResponse({'success': True, 'inventory': data, 'is_staff': request.user.employee.position in STAFF}, status=200)
+
+
+    except ObjectDoesNotExist:
+        return JsonResponse({'success': False, 'message': f'El inventario con el ID "{inventory_id}" no existe.'}, status=404)'''
