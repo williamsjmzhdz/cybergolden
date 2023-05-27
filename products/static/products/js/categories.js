@@ -21,6 +21,7 @@ document.addEventListener('DOMContentLoaded', () => {
   
   const $navLinks = document.querySelectorAll('.nav-link');
   markActiveNavigationLink($navLinks, 'nav-link-categories');
+  
 });
 
 function markActiveNavigationLink($navLinks, activeLink) {

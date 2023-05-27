@@ -1,0 +1,48 @@
+{% extends 'users/layout.html' %}
+
+{% load static %}
+
+{% block extend_head %}
+<title>Editar inventario - Cybergolden</title>
+<link rel="stylesheet" href="{% static 'users/assets/css/layout.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+  <div>
+    <div id="update-inventory-container">
+      <div class="card shadow">
+        <div class="card-header d-flex justify-content-between align-items-center flex-wrap py-3">
+          <p class="text-primary flex-grow-0 flex-shrink-1 m-0 fw-bold">Editar inventario</p>
+        </div>
+        <div class="card-body">
+          <form id="update-inventory-form" action="{% url 'products:update_inventory' inventory.id %}" method="POST">
+            {% csrf_token %}
+            <div class="mb-3">
+              <label class="form-label" for="name">Nombre del inventario</label>
+              {{ form.name }}
+              {% if message %}
+              <small class="form-text text-muted" style="color: tomato !important;" id="repeated-name-alert">
+              {{ message }}
+              </small>
+            {% endif %}
+            </div>
+            <div class="mb-3">
+              <button class="btn btn-primary" type="submit" id="submit-update-inventory-btn">Editar inventario</button>
+              <button class="btn btn-secondary" type="button" id="cancel-update-inventory-btn">Cancelar</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+    <script src="{% static 'users/assets/bootstrap/js/bootstrap.min.js' %}"></script>
+    <script src="{% static 'users/assets/js/bs-init.js' %}"></script>
+    <script src="{% static 'users/assets/js/theme.js' %}"></script>
+    <script src="{% static 'products/js/update-inventory.js' %}"></script>  
+{% endblock %}

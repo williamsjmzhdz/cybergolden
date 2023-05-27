@@ -19,6 +19,8 @@ urlpatterns = [
 
     # Plantillas de inventario
     path('inventory/', views.inventory, name='inventory'),
+    path('create/inventory', views.create_inventory, name='create_inventory'),
+    path('update/inventory/<int:inventory_id>', views.update_inventory, name='update_inventory'),
 
     # Rutas API para categorías
     path('api/create/category', api_views.create_category),
@@ -27,4 +29,10 @@ urlpatterns = [
 
     # Rutas API para productos
     path('api/delete/product', api_views.delete_product),
+
+    # Rutas API para inventarios
+    path('api/delete/inventory', api_views.delete_inventory),
+    path('api/get/products/inventory/<int:inventory_id>', api_views.get_products_inventory),
+    path('api/update/product/stock', api_views.update_product_stock),
+    #path('api/get/ordered/products/<str:order>/<int:inventory_id>', api_views.get_ordered_products_inventory),
 ]
