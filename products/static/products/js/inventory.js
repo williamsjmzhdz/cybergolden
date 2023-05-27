@@ -43,32 +43,34 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Función changeOrder
   function changeOrder(order) {
-    // const selectInventory = document.getElementById('select-inventory');
-    // const selectedIndex = selectInventory.selectedIndex;
-    // const selectedOption = selectInventory.options[selectedIndex];
-    // const inventoryId = selectedOption.getAttribute('data-id');
+    const tbody = document.querySelector('tbody');
+    const tableRows = Array.from(tbody.querySelectorAll('.tableRow'));
+  
+    if (order === 'descending_stock') {
+      tableRows.sort((row1, row2) => {
+        const stock1 = parseInt(row1.querySelector('.stock-input').value);
+        const stock2 = parseInt(row2.querySelector('.stock-input').value);
+        return stock2 - stock1;
+      });
+    } else if (order === 'upward_stock') {
+      tableRows.sort((row1, row2) => {
+        const stock1 = parseInt(row1.querySelector('.stock-input').value);
+        const stock2 = parseInt(row2.querySelector('.stock-input').value);
+        return stock1 - stock2;
+      });
+    } else if (order === 'none') {
+      
+      const selectedInventoryId = getSelectedInventoryId();
 
-    // const url = `/products/api/get/ordered/products/${order}/${inventoryId}`;
+      // Mostrar el contenido del inventario seleccionado
+      if (selectedInventoryId) {
+        showInventoryProducts(selectedInventoryId);
+      }
 
-    // try {
-    //   const response = await fetch(url);
-    //   const data = await response.json();
-
-    //   // Procesa la respuesta de la petición
-    //   const inventory = data.inventory;
-    //   for (const key in inventory) {
-    //       if (inventory.hasOwnProperty(key)) {
-    //           const stock = inventory[key];
-    //           console.log(stock);
-    //       }
-    //   }
-    // } catch (error) {
-    //   // Maneja el error en caso de que ocurra
-    //   console.error(error);
-    // }
-
-    // Código para ordenar los productos del inventario.
-    console.log('changeOrder');
+    }
+  
+    // Reordenar las filas en el tbody
+    tableRows.forEach(row => tbody.appendChild(row));
   }
 
   const $navLinks = document.querySelectorAll('.nav-link');
@@ -237,6 +239,25 @@ async function showInventoryProducts(inventoryId) {
         });
       });
 
+      // Agregar un event listener al campo de búsqueda
+      const searchInput = document.getElementById('searchInput');
+      const nameColumns = document.querySelectorAll('#dataTable tbody td:first-child');
+      
+      searchInput.addEventListener('input', function() {
+        const searchText = this.value.toLowerCase().trim();
+      
+        nameColumns.forEach(column => {
+          const columnText = column.innerText.toLowerCase();
+          const row = column.parentElement;
+      
+          if (columnText.includes(searchText)) {
+            row.style.display = '';
+          } else {
+            row.style.display = 'none';
+          }
+        });
+      });
+      
 
     }
 
