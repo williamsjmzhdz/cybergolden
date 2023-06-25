@@ -22,6 +22,7 @@ urlpatterns = [
     path('create/inventory', views.create_inventory, name='create_inventory'),
     path('update/inventory/<int:inventory_id>', views.update_inventory, name='update_inventory'),
 
+
     # Rutas API para categorías
     path('api/create/category', api_views.create_category),
     path('api/delete/category', api_views.delete_category),

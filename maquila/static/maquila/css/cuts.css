@@ -1,0 +1,10 @@
+.list-group-item:hover {
+  background-color: #f8f8f8;
+  transition: background-color 0.3s ease;
+  cursor: pointer;
+}
+
+.list-group-item:active {
+  transform: translate(1px, 1px);
+  transition: transform 0.2s ease;
+}

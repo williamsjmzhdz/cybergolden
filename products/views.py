@@ -181,6 +181,7 @@ def inventory(request):
 
     return render(request, 'products/inventory.html', {
         'inventories': inventories,
+        'is_staff': request.user.employee.position in STAFF,
     })
 
 

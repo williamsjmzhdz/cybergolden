@@ -47,7 +47,6 @@ def profile(request):
         employee = None
         see_sales = False
 
-    print(employee, see_sales)
     context = {'employee': employee, 'see_sales': see_sales}
     
     return render(request, 'users/profile.html', context)
