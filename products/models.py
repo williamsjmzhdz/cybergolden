@@ -40,6 +40,8 @@ class Category(models.Model):
     Model that represents a category in the database.
     """
     name = models.CharField(max_length=100, unique=True, blank=False, null=False)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
         return self.name
@@ -57,6 +59,8 @@ class Product(models.Model):
     #stock = models.IntegerField(default=0, blank=True, null=True) # <-- Va en la tabla ProductInventory
     minimum_stock = models.IntegerField(blank=False, null=False)
     size = models.CharField(max_length=10, blank=True, null=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
         return self.name
@@ -66,6 +70,8 @@ class Inventory(models.Model):
     Model that represents a inventory in the database.
     """
     name = models.CharField(max_length=100, unique=True, blank=False, null=False)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
         return self.name
@@ -78,6 +84,8 @@ class Stock(models.Model):
     inventory = models.ForeignKey(Inventory, on_delete=models.CASCADE)
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
     stock = models.IntegerField()
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
 
     def serialize(self):
         return {
